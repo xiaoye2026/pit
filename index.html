@@ -19,7 +19,7 @@
         .nav { text-align: center; margin-bottom: 30px; font-size: 1.05rem; font-weight: bold; text-transform: uppercase; }
         .nav a { margin: 0 10px; border-bottom: 1px solid #1c1c1c; padding-bottom: 2px; }
 
-        /* 超大模块 (Hero Banner) */
+        /* 超大模块 */
         .hero-module { border: 4px solid #1c1c1c; background-color: #1c1c1c; color: #f4f4f2; padding: 30px; text-align: center; margin-bottom: 40px; box-shadow: 8px 8px 0px #ccc; }
         .hero-module h2 { color: #f4f4f2; font-size: 2rem; margin-bottom: 15px; letter-spacing: 2px; }
         .hero-module p { font-size: 1.1rem; max-width: 800px; margin: 0 auto; line-height: 1.8; }
@@ -39,6 +39,11 @@
         .paper-abstract { font-size: 0.95rem; background: #ebebe8; padding: 10px; border-left: 3px solid #1c1c1c; margin: 10px 0; color: #444; }
         .paper-footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; margin-top: 10px;}
 
+        /* 新增：无用科研专属样式 */
+        .useless-item { margin-bottom: 15px; padding: 15px; border: 1px dashed #1c1c1c; background: #fafafa; }
+        .useless-title { font-size: 1.1rem; font-weight: bold; color: #8b0000; margin-bottom: 8px; }
+        .useless-abstract { font-size: 0.9rem; color: #333; line-height: 1.6; }
+
         /* 分页器 */
         .pagination { display: flex; justify-content: center; gap: 10px; margin-top: 20px; font-size: 0.9rem; font-weight: bold;}
 
@@ -48,15 +53,14 @@
         .progress-bar { height: 100%; background: #1c1c1c; transition: width 0.5s ease; }
         .comment-section { display: none; margin-top: 15px; border-top: 1px dashed #1c1c1c; padding-top: 15px; cursor: default; }
         .hot-comment { font-size: 0.85rem; color: #222; margin-bottom: 10px; background: #fff; padding: 8px; border: 1px solid #ccc;}
-        .hot-comment-footer { text-align: right; margin-top: 5px; }
         
-        /* 💥 新增：底部三大独立工具栏排版 💥 */
+        /* 底部工具栏排版 */
         .bottom-tools { display: flex; flex-wrap: wrap; gap: 30px; margin-top: 60px; border-top: 4px double #1c1c1c; padding-top: 40px; }
         .tool-box { flex: 1; min-width: 300px; border: 2px solid #1c1c1c; background: #fff; padding: 20px; box-shadow: 4px 4px 0px #ccc; }
         .tool-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; border-bottom: 2px solid #1c1c1c; padding-bottom: 10px; text-transform: uppercase; }
         .tool-content { font-size: 0.9rem; color: #111; min-height: 120px; margin-bottom: 15px; line-height: 1.8; word-wrap: break-word; }
 
-        /* 底部联系我们页脚 */
+        /* 页脚 */
         .site-footer { margin-top: 60px; border-top: 4px solid #1c1c1c; padding-top: 30px; padding-bottom: 20px; text-align: center; clear: both;}
         
         /* 按钮与输入框 */
@@ -67,11 +71,6 @@
         .like-btn { padding: 2px 6px; font-size: 0.75rem; background: transparent; color: #1c1c1c; border: 1px solid #ccc; font-weight: normal; }
         .like-btn:hover:not(:disabled) { background: #1c1c1c; color: #fff; box-shadow: none;}
 
-        .danger-btn { background: #8b0000; color: #fff; border-color: #8b0000; }
-        .danger-btn:hover:not(:disabled) { background: #fff; color: #8b0000; box-shadow: 2px 2px 0px #8b0000; }
-        .success-btn { background: #228b22; color: #fff; border-color: #228b22; width: 100%; margin-bottom: 15px;}
-        .success-btn:hover:not(:disabled) { background: #fff; color: #228b22; box-shadow: 2px 2px 0px #228b22; }
-
         input[type="text"], textarea { border: 1px solid #1c1c1c; background-color: #fff; padding: 8px; font-family: inherit; width: 100%; box-sizing: border-box; margin-bottom: 10px;}
         .input-group { display: flex; gap: 10px; margin-bottom: 15px; }
         .input-group input { margin-bottom: 0; flex: 1; }
@@ -81,11 +80,6 @@
         dialog::backdrop { background: rgba(0, 0, 0, 0.7); }
         .close-btn { background: transparent; color: #1c1c1c; border: none; float: right; font-size: 1.5rem; margin-top: -20px; margin-right: -20px; line-height: 1;}
         .close-btn:hover { color: red; box-shadow: none; background: transparent;}
-
-        /* 管理员后台列表样式 */
-        .admin-list-item { border: 1px solid #ccc; background: #fff; padding: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .admin-list-content { max-width: 70%; font-size: 0.9rem; }
-        .admin-actions { display: flex; gap: 5px; }
     </style>
 </head>
 <body>
@@ -97,24 +91,35 @@
 
     <div class="nav">
         <a href="#papers">Latest Issue / 最新文献</a>
+        <a href="#useless">Useless / 无用科研</a>
         <a href="#forum">Pit Index / 天坑指数</a>
-        <a href="#tools-section">Tools & Secret / 工具与树洞</a>
-        <a href="#footer">Contact / 联系我们</a>
+        <a href="#tools-section">Tools / 工具与树洞</a>
     </div>
 
-    <div class="hero-module">
-        <h2>既然已入坑，何不施展十八般武艺？</h2>
-        <p>在这个充斥着退稿、重修与自我怀疑的学术荒原里，我们为你提供最具创造性的精神避难所。不要试图在这里寻找意义，因为我们致力于研究那些看似高深、实则与现实毫无交集的“绝妙”理论。在这里，废话也是一种艺术。</p>
+   <div class="hero-module">
+        <h2>Focusing on Research That Changes Absolutely Nothing</h2>
+        <p>既然深陷坑底，不如挖出有创意的坑。</p>
     </div>
 
     <div class="layout-wrapper">
-        <div class="main-col" id="papers">
-            <div class="section-title">
-                <h2 style="margin:0; font-size: 1.2rem;">Current Issue / 最新文献</h2>
-                <button onclick="document.getElementById('submitModal').showModal()">Submit / 投稿</button>
+        <div class="main-col">
+            <div id="papers" style="margin-bottom: 50px;">
+                <div class="section-title">
+                    <h2 style="margin:0; font-size: 1.2rem;">Current Issue / 最新文献</h2>
+                    <button onclick="document.getElementById('submitModal').showModal()">Submit / 投稿</button>
+                </div>
+                <div id="papers-container" style="color:#666;">📡 同步中...</div>
+                <div class="pagination" id="page-ctrl"></div>
             </div>
-            <div id="papers-container" style="color:#666;">📡 同步中...</div>
-            <div class="pagination" id="page-ctrl"></div>
+
+            <div id="useless">
+                <div class="section-title">
+                    <h2 style="margin:0; font-size: 1.2rem;">Useless Research / 纯粹无用科研大赏</h2>
+                    <button onclick="document.getElementById('submitUselessModal').showModal()">曝光我的无用课题</button>
+                </div>
+                <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">【全网匿名展示】看看世界上有多少人在和你一起做着毫无现实意义、只为水毕业的绝妙课题。</p>
+                <div id="useless-container" style="color:#666;">📡 正在拉取全球无用科研...</div>
+            </div>
         </div>
 
         <div class="side-col" id="forum">
@@ -127,11 +132,10 @@
     </div>
 
     <div class="bottom-tools" id="tools-section">
-        
         <div class="tool-box">
             <div class="tool-title">Academic BS / 学术废话生成</div>
             <div class="tool-content" id="bs-display">
-                【系统提示】输入你的课题关键词，系统将基于严谨的逻辑架构，为你生成一篇不少于400字、字字珠玑但毫无卵用的学术废话大纲。
+                【系统提示】输入课题关键词，系统将基于严谨的逻辑架构，为你生成一篇不少于400字的学术废话大纲。
             </div>
             <div class="input-group">
                 <input type="text" id="bs-keyword" placeholder="输入课题 (例: 量子纠缠)">
@@ -142,7 +146,7 @@
         <div class="tool-box">
             <div class="tool-title">Madness / 发疯文学生成</div>
             <div class="tool-content" id="jargon-display" style="border-bottom: 1px dashed #ccc; padding-bottom: 15px;">
-                【系统提示】无需输入，点击下方按钮，系统将为你随机宣泄一篇长达400字的天坑专业发疯文学，助你填补灵魂空白。
+                【系统提示】无需输入，点击下方按钮，随机宣泄一篇长达400字的天坑专业发疯文学，填补灵魂空白。
             </div>
             <button onclick="generateLongMadness()" style="width: 100%;">Generate / 随机发疯生成</button>
         </div>
@@ -150,30 +154,38 @@
         <div class="tool-box" style="background-color: #1c1c1c; color: #f4f4f2;">
             <div class="tool-title" style="border-bottom-color: #f4f4f2; color: #f4f4f2;">Tree Hole / 小叶的树洞</div>
             <div class="tool-content" style="color: #ccc;">
-                【私密留言】遇到奇葩导师？实验数据全军覆没？情绪崩溃想大哭一场？写下来吧，这里是只属于你和小叶学姐的秘密基地。你的留言不会公开展示。
+                【私密留言】遇到奇葩导师？实验数据全军覆没？情绪崩溃想大哭一场？写下来吧，这里是只属于你和小叶学姐的秘密基地。留言绝不公开。
             </div>
-            <textarea id="treehole-input" rows="4" placeholder="写下你的委屈或不开心..." style="background: #f4f4f2; border: none; margin-bottom: 15px;"></textarea>
+            <textarea id="treehole-input" rows="4" placeholder="写下你的委屈或不开心..." style="background: #f4f4f2; border: none; margin-bottom: 15px; color:#111;"></textarea>
             <button id="btn-treehole" onclick="submitTreeHole()" style="width: 100%; background: #f4f4f2; color: #1c1c1c; border: none;">✉️ 发送给小叶学姐</button>
         </div>
-
     </div>
 
     <footer class="site-footer" id="footer">
         <h3 style="margin-bottom: 10px; font-size: 1.1rem; text-transform: uppercase;">Contact Us / 联系我们</h3>
         <p style="font-size: 0.9rem; color: #444; margin: 5px 0;">如果你在天坑专业受苦受难，或者想合作发表“废话”水刊，请联系我们：</p>
         <p style="font-size: 1rem; font-weight: bold; margin: 10px 0;">Email: <a href="mailto:pit.journal@inutile.edu" style="text-decoration: underline;">pit.journal@inutile.edu</a></p>
-        <p style="font-size: 0.8rem; color: #666; margin-top: 20px; cursor: pointer;" onclick="openAdmin()">© 2026 PIT Journal. All Rights Reserved. (本页面最终解释权归小叶所有，不接受反驳)</p>
+        <p style="font-size: 0.8rem; color: #666; margin-top: 20px;">© 2026 PIT Journal. All Rights Reserved. (本页面最终解释权归小叶所有，不接受反驳)</p>
     </footer>
 
     <dialog id="submitModal">
         <button class="close-btn" onclick="document.getElementById('submitModal').close()">✖</button>
-        <h3 style="margin-top:0;">Submit to PIT</h3>
-        <p style="font-size:0.85rem; color:#8b0000;">注：提交后需等待主编(小叶)审核通过后方可显示。</p>
+        <h3 style="margin-top:0;">Submit to PIT / 提交正式文献</h3>
+        <p style="font-size:0.85rem; color:#8b0000;">注：提交后需等待主编审核通过后方可显示。</p>
         <input type="text" id="p-title" placeholder="研究标题">
         <input type="text" id="p-author" placeholder="署名 (默认: 匿名)">
         <textarea id="p-abstract" rows="2" placeholder="简短摘要"></textarea>
         <textarea id="p-content" rows="6" placeholder="正文内容"></textarea>
-        <button onclick="submitPaper()" id="btn-submit" style="width:100%; margin-top:10px;">发表文献</button>
+        <button onclick="submitPaper()" id="btn-submit" style="width:100%; margin-top:10px;">发表正式文献</button>
+    </dialog>
+
+    <dialog id="submitUselessModal">
+        <button class="close-btn" onclick="document.getElementById('submitUselessModal').close()">✖</button>
+        <h3 style="margin-top:0;">曝光无用科研 (全网匿名)</h3>
+        <p style="font-size:0.85rem; color:#8b0000;">只需写下你那毫无现实意义的课题名称和摘要。无需署名。</p>
+        <input type="text" id="u-title" placeholder="课题名称 (例: 基于喝水频率与掉发数量的关联研究)">
+        <textarea id="u-abstract" rows="4" placeholder="一句话摘要 (例: 本研究证明，只要活得够久，头发总会掉光。)"></textarea>
+        <button onclick="submitUseless()" id="btn-submit-useless" style="width:100%; margin-top:10px;">匿名曝光我的无用课题</button>
     </dialog>
 
     <dialog id="fullTextModal">
@@ -182,32 +194,15 @@
         <div id="ft-content" style="white-space: pre-wrap; font-size: 0.95rem; line-height: 1.8;"></div>
     </dialog>
 
-    <dialog id="adminModal">
-        <button class="close-btn" onclick="document.getElementById('adminModal').close()">✖</button>
-        <h3 style="margin-top:0; border-bottom: 2px solid #1c1c1c; padding-bottom: 10px;">主编控制台 (Admin Dashboard)</h3>
-        <button class="success-btn" onclick="injectSamples()" id="btn-inject">✨ 一键导入 10 篇天坑示例大作 ✨</button>
-        
-        <h4 style="margin-bottom: 10px;">待审核文献</h4>
-        <div id="admin-papers-container" style="max-height: 150px; overflow-y: auto; margin-bottom: 20px;"></div>
-        
-        <h4 style="margin-bottom: 10px;">天坑公开评论管理</h4>
-        <div id="admin-comments-container" style="max-height: 150px; overflow-y: auto; margin-bottom: 20px;"></div>
-
-        <h4 style="margin-bottom: 10px; color: #b22222;">✉️ 树洞私密来信 (仅你可见)</h4>
-        <div id="admin-treehole-container" style="max-height: 150px; overflow-y: auto; border: 2px solid #1c1c1c; padding: 10px; background: #fff;"></div>
-    </dialog>
-
     <script>
         const supabaseUrl = 'https://lbuhtjezlkirkxbfgwvt.supabase.co';
         const p1 = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.';
         const p2 = 'eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxidWh0amV6bGtpcmt4YmZnd3Z0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1Mzk0OTksImV4cCI6MjA4ODExNTQ5OX0.dBP_u7PXyy9D_mCYGYDkDzvOArDBcQ6Qf8FO0wdO5lg';
         const _supabase = supabase.createClient(supabaseUrl, p1 + p2);
 
-        /* ================= 1. 文献区与论坛区逻辑 ================= */
+        /* ================= 1. 正式文献逻辑 ================= */
         let curPage = 1;
-        const pageSize = 10;
-        let globalForumData = [];
-        let globalCommentsData = [];
+        const pageSize = 5; // 正式文献每页显示5篇，给下方让位
 
         async function fetchPapers() {
             const start = (curPage - 1) * pageSize;
@@ -223,37 +218,58 @@
                     <div class="paper-abstract">${p.abstract}</div>
                     <div class="paper-footer">
                         <span style="color:#b22222; cursor:pointer; font-weight:bold; text-decoration:underline;" onclick="openFT('${encodeURIComponent(JSON.stringify(p))}')">阅读全文 &raquo;</span>
-                        <button class="like-btn" style="padding:4px 10px;" onclick="likePaper(event, '${p.id}', ${p.likes||0})" ${hasLiked ? 'disabled' : ''}>
-                            👍 共鸣 ${p.likes||0} ${hasLiked ? '(已鸣)' : ''}
-                        </button>
+                        <button class="like-btn" onclick="likePaper(event, '${p.id}', ${p.likes||0})" ${hasLiked ? 'disabled' : ''}>👍 共鸣 ${p.likes||0}</button>
                     </div>
                 </div>`;
             }).join('') || '暂无已审核的文献';
             
-            const totalPages = Math.ceil(count / pageSize);
-            document.getElementById('page-ctrl').innerHTML = `<button ${curPage===1?'disabled':''} onclick="changePage(-1)">PREV</button> <span style="line-height: 30px;">${curPage} / ${totalPages||1}</span> <button ${curPage>=totalPages?'disabled':''} onclick="changePage(1)">NEXT</button>`;
+            const totalPages = Math.ceil(count / pageSize) || 1;
+            document.getElementById('page-ctrl').innerHTML = `<button ${curPage===1?'disabled':''} onclick="changePage(-1)">PREV</button> <span style="line-height: 30px;">${curPage} / ${totalPages}</span> <button ${curPage>=totalPages?'disabled':''} onclick="changePage(1)">NEXT</button>`;
         }
 
-        function changePage(s) { curPage += s; fetchPapers(); window.scrollTo(0, 0); }
-        function openFT(str) {
-            const p = JSON.parse(decodeURIComponent(str));
-            document.getElementById('ft-title').innerText = p.title; document.getElementById('ft-content').innerText = p.content || "正文空缺。"; document.getElementById('fullTextModal').showModal();
-        }
-        async function likePaper(event, id, cur) {
-            event.stopPropagation(); event.target.innerText = `👍 共鸣 ${cur + 1} (已鸣)`; event.target.disabled = true; localStorage.setItem('pit_liked_paper_' + id, 'true');
-            await _supabase.from('pit_papers').update({ likes: cur + 1 }).eq('id', id);
-        }
+        function changePage(s) { curPage += s; fetchPapers(); window.scrollTo(0, 400); }
+        function openFT(str) { const p = JSON.parse(decodeURIComponent(str)); document.getElementById('ft-title').innerText = p.title; document.getElementById('ft-content').innerText = p.content || "正文空缺。"; document.getElementById('fullTextModal').showModal(); }
+        async function likePaper(e, id, cur) { e.stopPropagation(); e.target.innerText = `👍 共鸣 ${cur + 1}`; e.target.disabled = true; localStorage.setItem('pit_liked_paper_'+id, 'true'); await _supabase.from('pit_papers').update({ likes: cur + 1 }).eq('id', id); }
         async function submitPaper() {
             const title = document.getElementById('p-title').value.trim(); const author = document.getElementById('p-author').value.trim() || '匿名';
             const abstract = document.getElementById('p-abstract').value.trim(); const content = document.getElementById('p-content').value.trim();
             if(!title) return alert("标题必填");
-            const btn = document.getElementById('btn-submit'); btn.innerText = "提交中..."; btn.disabled = true;
+            document.getElementById('btn-submit').innerText = "提交中..."; document.getElementById('btn-submit').disabled = true;
             await _supabase.from('pit_papers').insert([{ title, author, abstract, content, likes: 0, status: 'pending' }]);
-            btn.innerText = "发表文献"; btn.disabled = false; document.getElementById('submitModal').close();
-            document.getElementById('p-title').value = ''; document.getElementById('p-author').value = ''; document.getElementById('p-abstract').value = ''; document.getElementById('p-content').value = '';
-            alert("提交成功！等待审核。"); fetchPapers();
+            alert("提交成功！等待小叶学姐在 Supabase 后台审核。");
+            document.getElementById('submitModal').close(); document.getElementById('btn-submit').innerText = "发表正式文献"; document.getElementById('btn-submit').disabled = false;
         }
 
+        /* ================= 2. 全新：无用科研大赏逻辑 ================= */
+        async function fetchUseless() {
+            // 只拉取通过审核的无用科研
+            const { data } = await _supabase.from('pit_useless_research').select('*').eq('status', 'approved').order('created_at', { ascending: false }).limit(10);
+            document.getElementById('useless-container').innerHTML = data?.map(u => `
+                <div class="useless-item">
+                    <div class="useless-title">🔬 课题：${u.title}</div>
+                    <div class="useless-abstract"><strong>核心摘要：</strong>${u.abstract}</div>
+                </div>
+            `).join('') || '目前还没有无用科研被曝光。';
+        }
+
+        async function submitUseless() {
+            const title = document.getElementById('u-title').value.trim();
+            const abstract = document.getElementById('u-abstract').value.trim();
+            if(!title || !abstract) return alert("课题和摘要都要填哦！");
+            
+            const btn = document.getElementById('btn-submit-useless');
+            btn.innerText = "提交中..."; btn.disabled = true;
+            
+            await _supabase.from('pit_useless_research').insert([{ title, abstract, status: 'pending' }]);
+            
+            alert("提交成功！你的无用课题已发送至 Supabase，等待主编审核曝光！");
+            document.getElementById('submitUselessModal').close();
+            btn.innerText = "匿名曝光我的无用课题"; btn.disabled = false;
+            document.getElementById('u-title').value = ''; document.getElementById('u-abstract').value = '';
+        }
+
+        /* ================= 3. 论坛与树洞 ================= */
+        let globalForumData = []; let globalCommentsData = [];
         async function fetchAllForumData() {
             const [forumRes, commentsRes] = await Promise.all([
                 _supabase.from('pit_forum').select('*').order('count', { ascending: false }),
@@ -261,8 +277,7 @@
             ]);
             if (!forumRes.error && !commentsRes.error) {
                 globalForumData = forumRes.data; globalCommentsData = commentsRes.data;
-                document.getElementById('loading-msg').style.display = 'none';
-                renderForum();
+                document.getElementById('loading-msg').style.display = 'none'; renderForum();
             }
         }
 
@@ -272,16 +287,13 @@
                 const progressPercent = Math.min((item.count / 250) * 100, 100);
                 const hasCommented = localStorage.getItem(`pit_commented_${item.id}`);
                 const topComments = globalCommentsData.filter(c => c.major_id === item.id).sort((a, b) => b.likes - a.likes).slice(0, 3);
-                
                 let commentsHTML = '<div style="margin-bottom: 10px; font-size: 0.9rem;"><strong>🔥 Top 3 天坑语录:</strong></div>';
                 if (topComments.length > 0) {
                     topComments.forEach(c => {
                         const hasLiked = localStorage.getItem(`pit_liked_${c.id}`);
-                        commentsHTML += `<div class="hot-comment">"${c.content}" <div class="hot-comment-footer"><button class="like-btn" onclick="likeComment(event, ${c.id}, ${c.likes})" ${hasLiked ? 'disabled' : ''}>👍 ${c.likes} ${hasLiked ? '(已赞)' : ''}</button></div></div>`;
+                        commentsHTML += `<div class="hot-comment">"${c.content}" <div class="hot-comment-footer"><button class="like-btn" onclick="likeComment(event, ${c.id}, ${c.likes})" ${hasLiked?'disabled':''}>👍 ${c.likes}</button></div></div>`;
                     });
-                } else {
-                    commentsHTML += `<div style="color:#888; margin-bottom: 15px; font-size:0.85rem;">暂无吐槽。</div>`;
-                }
+                } else { commentsHTML += `<div style="color:#888; margin-bottom: 15px; font-size:0.85rem;">暂无吐槽。</div>`; }
 
                 container.innerHTML += `
                     <div class="forum-module" onclick="toggleComment('${item.id}')">
@@ -292,104 +304,43 @@
                             ${commentsHTML}
                             <div style="margin-top: 15px; border-top: 1px dashed #999; padding-top: 10px;">
                                 <textarea id="input_${item.id}" rows="2" placeholder="写下你的入坑指南..."></textarea>
-                                <button id="btn_${item.id}" onclick="submitForum('${item.id}', ${item.count})" style="margin-top:5px; width: 100%;" ${hasCommented ? 'disabled' : ''}>${hasCommented ? '🕳 已入坑' : '入坑'}</button>
+                                <button id="btn_${item.id}" onclick="submitForum('${item.id}', ${item.count})" style="margin-top:5px; width: 100%;" ${hasCommented?'disabled':''}>${hasCommented?'🕳 已入坑':'入坑'}</button>
                             </div>
                         </div>
                     </div>`;
             });
         }
-
         function toggleComment(id) { const sec = document.getElementById(`comment_${id}`); sec.style.display = sec.style.display === 'block' ? 'none' : 'block'; }
-        async function likeComment(event, commentId, currentLikes) {
-            event.stopPropagation(); event.target.innerText = `👍 ${currentLikes + 1} (已赞)`; event.target.disabled = true; localStorage.setItem(`pit_liked_${commentId}`, 'true');
-            await _supabase.from('pit_comments').update({ likes: currentLikes + 1 }).eq('id', commentId); fetchAllForumData();
-        }
+        async function likeComment(e, commentId, currentLikes) { e.stopPropagation(); e.target.innerText = `👍 ${currentLikes + 1}`; e.target.disabled = true; localStorage.setItem(`pit_liked_${commentId}`, 'true'); await _supabase.from('pit_comments').update({ likes: currentLikes + 1 }).eq('id', commentId); }
         async function submitForum(id, currentCount) {
             const text = document.getElementById(`input_${id}`).value.trim(); if (!text) return;
-            const btn = document.getElementById(`btn_${id}`); btn.innerText = "上传中..."; btn.disabled = true;
             await _supabase.from('pit_comments').insert([{ major_id: id, content: text, likes: 0 }]);
             await _supabase.from('pit_forum').update({ count: Math.min(currentCount + 1, 250) }).eq('id', id);
-            localStorage.setItem(`pit_commented_${id}`, 'true'); alert("入坑申请已提交！");
-            document.getElementById(`input_${id}`).value = ''; fetchAllForumData();
+            localStorage.setItem(`pit_commented_${id}`, 'true'); alert("入坑申请已提交！"); fetchAllForumData();
         }
 
-        /* ================= 2. 交互式学术废话生成器逻辑 ================= */
-        function generateBS() {
-            let kw = document.getElementById('bs-keyword').value.trim();
-            if(!kw) kw = "该死的天坑研究方向";
-            const t1 = `本研究基于【${kw}】提出一个多维理论架构，旨在通过跨模态的数据重构与底层逻辑打通，构建一套前瞻性的赋能体系。在早期的文献调研阶段，我们便敏锐地察觉到，传统方法在处理【${kw}】的非线性交互时，往往存在严重的性能瓶颈。为了打破这一壁垒，我们引入了基于薛定谔状态的随机扰动因子。`;
-            const t2 = `虽然在所有实证层面，我们极其遗憾地未观察到任何统计意义上的显著性差异，且部分核心数据出现了断崖式下跌，甚至呈现出一种难以名状的反常理波动。但在经历了无数次痛心疾首的复现失败后，我们不得不承认：正是这种不可预测性，赋予了【${kw}】令人着迷的玄学魅力。`;
-            const t3 = `然而，这并不意味着我们的努力付之东流。相反，该模型在理论空间中展现出了与现实完全无交集的绝妙性质。具体而言，它成功地将【${kw}】的生命周期下沉到了一个无人问津的维度，实现了从“无法解决问题”到“直接消灭提出问题的人”的完美闭环。`;
-            const t4 = `综上所述，本研究的开展不仅极大地消耗了实验室宝贵的试剂耗材，更为后续同行如何完美避坑提供了反面教材。未来，我们将继续围绕【${kw}】深耕细作，争取在更多毫无意义的方向上取得突破性进展，直至彻底掏空导师的经费。`;
-            document.getElementById('bs-display').innerHTML = `<strong style="color:#8b0000; font-size:1.1rem;">《关于【${kw}】的无效性论证及理论自洽》</strong><br><br>` + t1 + "<br><br>" + t2 + "<br><br>" + t3 + "<br><br>" + t4;
-        }
-
-        /* ================= 3. 发疯文学生成器逻辑 ================= */
-        function generateLongMadness() {
-            const openings = ["作为一个在天坑里摸爬滚打多年的科研搬砖工，我现在的情绪非常稳定。","夜深了，培养箱里的细胞又死了一批，通风橱的轰鸣声像极了我心碎的声音。","导师今天又在群里画饼了，我看着满桌子的废液槽陷入了沉思。"];
-            const bodies = ["所谓的数据清洗，就是把我流过的眼泪从Excel表格里擦掉。在无数个日夜交替中，我试图解构这套复杂场景下的非线性交互模型，却发现自己只是在这场学术游戏中扮演了一个毫无卵用的NPC。底层机制？没有底层机制。协同演化？那只是我的头发和导师的期望在协同消失。","从前期的文献调研到后期的实验受挫，这是一场完美的端到端范式转移。我每天都在调整不知所谓的参数，试图打破传统方法的性能瓶颈。实际上，瓶颈就是我自己。当鲁棒性增强算法也无法拯救阳性结果时，我承认一切都是命运的安排。"];
-            const endings = ["所以，不要问我文章投了哪里，问就是还在修改，还在打磨。科研的尽头不仅是玄学，更是我为了水够字数发出的最后一声长叹。天坑不空，誓不毕业。","虽然我的研究没解决任何实际问题，但它至少成功浪费了经费和我宝贵的青春。在这个充满不确定性的学术界里，这也算是一种另类的稳定吧。"];
-            const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
-            document.getElementById('jargon-display').innerText = pick(openings) + " " + pick(bodies) + " 别人说科研需要严谨，但在我这里只需要抗压。其实这些都不是最重要的，重要的是，我似乎已经习惯了这种被数据反复折磨的快感。" + pick(endings);
-        }
-
-        /* ================= 4. 💌 树洞提交逻辑 💌 ================= */
         async function submitTreeHole() {
-            const text = document.getElementById('treehole-input').value.trim();
-            if (!text) return;
-            const btn = document.getElementById('btn-treehole');
-            btn.innerText = "发送中..."; btn.disabled = true;
-            // 我们巧妙地把树洞留言也存在 pit_comments 表里，但设定一个特殊的 major_id 叫 'tree_hole'
+            const text = document.getElementById('treehole-input').value.trim(); if (!text) return;
+            const btn = document.getElementById('btn-treehole'); btn.innerText = "发送中..."; btn.disabled = true;
             await _supabase.from('pit_comments').insert([{ major_id: 'tree_hole', content: text, likes: 0 }]);
-            alert("✨ 发送成功！小叶学姐已经收到你的情绪啦，摸摸头~");
-            document.getElementById('treehole-input').value = '';
-            btn.innerText = "✉️ 发送给小叶学姐"; btn.disabled = false;
+            alert("✨ 发送成功！小叶学姐在后台能看到你的情绪啦，摸摸头~");
+            document.getElementById('treehole-input').value = ''; btn.innerText = "✉️ 发送给小叶学姐"; btn.disabled = false;
         }
 
-        /* ================= 5. 管理员后台逻辑 ================= */
-        async function openAdmin() {
-            const pwd = prompt("请输入主编密码进入控制台：");
-            if (pwd !== "xiaoye666") { if (pwd !== null) alert("密码错误！"); return; }
-            document.getElementById('adminModal').showModal(); loadAdminData();
+        /* ================= 4. 生成器 ================= */
+        function generateBS() {
+            let kw = document.getElementById('bs-keyword').value.trim(); if(!kw) kw = "该死的天坑研究方向";
+            document.getElementById('bs-display').innerHTML = `<strong style="color:#8b0000; font-size:1.1rem;">《关于【${kw}】的无效性论证》</strong><br><br>本研究基于【${kw}】提出一个多维理论架构...<br><br>虽然未观察到任何统计学意义...<br><br>然而，该模型成功实现了从“无法解决问题”到“直接消灭提出问题的人”的完美闭环。<br><br>综上所述，本研究不仅消耗了实验室经费，更为后续避坑提供了反面教材。`;
+        }
+        function generateLongMadness() {
+            const openings = ["作为一个科研搬砖工，我现在的情绪非常稳定。","夜深了，培养箱里的细胞又死了一批。"];
+            const bodies = ["所谓的数据清洗，就是把我流过的眼泪从Excel表格里擦掉。","我每天都在调整不知所谓的参数，试图打破传统方法的性能瓶颈。"];
+            const endings = ["科研的尽头不仅是玄学，更是我为了水够字数发出的最后一声长叹。","虽然我的研究没解决实际问题，但至少成功浪费了青春。"];
+            const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+            document.getElementById('jargon-display').innerText = pick(openings) + " " + pick(bodies) + " 别人说科研需要严谨，但在我这里只需要抗压。" + pick(endings);
         }
 
-        async function loadAdminData() {
-            const pCon = document.getElementById('admin-papers-container'); 
-            const cCon = document.getElementById('admin-comments-container');
-            const tCon = document.getElementById('admin-treehole-container');
-            
-            pCon.innerHTML = '加载中...'; cCon.innerHTML = '加载中...'; tCon.innerHTML = '加载中...';
-            
-            // 审核文献
-            const { data: pendingPapers } = await _supabase.from('pit_papers').select('*').eq('status', 'pending');
-            pCon.innerHTML = pendingPapers?.length ? pendingPapers.map(p => `<div class="admin-list-item"><div class="admin-list-content"><strong>${p.title}</strong><br>作者: ${p.author}</div><div class="admin-actions"><button onclick="approvePaper('${p.id}')">通过</button><button class="danger-btn" onclick="deletePaper('${p.id}')">删除</button></div></div>`).join('') : '<div style="color:#666; font-size:0.9rem;">暂无待审核文献。</div>';
-            
-            // 区分普通评论和树洞留言
-            const publicComments = globalCommentsData?.filter(c => c.major_id !== 'tree_hole') || [];
-            const secretMessages = globalCommentsData?.filter(c => c.major_id === 'tree_hole') || [];
-
-            cCon.innerHTML = publicComments.length ? publicComments.map(c => `<div class="admin-list-item"><div class="admin-list-content">"${c.content}"</div><div class="admin-actions"><button class="danger-btn" onclick="deleteComment('${c.id}')">删除</button></div></div>`).join('') : '<div style="color:#666; font-size:0.9rem;">暂无公开评论。</div>';
-            
-            tCon.innerHTML = secretMessages.length ? secretMessages.map(c => `<div style="border-bottom: 1px dashed #ccc; padding: 10px 0; font-size: 0.95rem; color: #111;">${new Date(c.created_at).toLocaleDateString()} - "${c.content}" <button class="danger-btn" style="padding: 2px 6px; float: right;" onclick="deleteComment('${c.id}')">阅毕删除</button></div>`).join('') : '<div style="color:#666; font-size:0.9rem;">目前没有新的树洞留言。</div>';
-        }
-
-        async function approvePaper(id) { if(confirm("确定通过吗？")) { await _supabase.from('pit_papers').update({ status: 'approved' }).eq('id', id); loadAdminData(); fetchPapers(); } }
-        async function deletePaper(id) { if(confirm("确定删除吗？")) { await _supabase.from('pit_papers').delete().eq('id', id); loadAdminData(); } }
-        async function deleteComment(id) { if(confirm("确定删除这条记录吗？")) { await _supabase.from('pit_comments').delete().eq('id', id); loadAdminData(); fetchAllForumData(); } }
-
-        async function injectSamples() {
-            if(!confirm("导入 10 篇搞怪文献示例？")) return;
-            document.getElementById('btn-inject').innerText = "疯狂导入中..."; document.getElementById('btn-inject').disabled = true;
-            const samples = [
-                { title: "基于多喝热水的导师话术演化机制研究", author: "匿名牛马", abstract: "本文深入探究了导师在面临科研瓶颈时，如何通过高频词汇'多喝热水'实现对学生精神层面的降维打击。", content: "正文：水是一切生命的源泉，也是导师画大饼时的润滑剂。", likes: 99, status: "approved" },
-                { title: "论画饼充饥在研究生心理干预中的实证分析", author: "实验室早C晚A", abstract: "研究表明，一张饼的半径与学生的存活率呈显著的正相关，但过大的饼易导致消化不良与延毕综合征。", content: "正文：饼很大，但我咽不下去。", likes: 88, status: "approved" }
-            ];
-            await _supabase.from('pit_papers').insert(samples);
-            document.getElementById('btn-inject').innerText = "✨ 一键导入 10 篇天坑示例大作 ✨"; document.getElementById('btn-inject').disabled = false;
-            alert("导入成功！"); fetchPapers();
-        }
-
-        window.onload = () => { fetchPapers(); fetchAllForumData(); };
+        window.onload = () => { fetchPapers(); fetchUseless(); fetchAllForumData(); };
     </script>
 </body>
 </html>
