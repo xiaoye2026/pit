@@ -281,35 +281,89 @@
             }
         }
 
-        function renderForum() {
-            const container = document.getElementById('forum-container'); container.innerHTML = '';
-            globalForumData.forEach(item => {
-                const progressPercent = Math.min((item.count / 250) * 100, 100);
-                const hasCommented = localStorage.getItem(`pit_commented_${item.id}`);
-                const topComments = globalCommentsData.filter(c => c.major_id === item.id).sort((a, b) => b.likes - a.likes).slice(0, 3);
-                let commentsHTML = '<div style="margin-bottom: 10px; font-size: 0.9rem;"><strong>🔥 Top 3 天坑语录:</strong></div>';
-                if (topComments.length > 0) {
-                    topComments.forEach(c => {
-                        const hasLiked = localStorage.getItem(`pit_liked_${c.id}`);
-                        commentsHTML += `<div class="hot-comment">"${c.content}" <div class="hot-comment-footer"><button class="like-btn" onclick="likeComment(event, ${c.id}, ${c.likes})" ${hasLiked?'disabled':''}>👍 ${c.likes}</button></div></div>`;
-                    });
-                } else { commentsHTML += `<div style="color:#888; margin-bottom: 15px; font-size:0.85rem;">暂无吐槽。</div>`; }
+      <script>
+function renderForum() {
+    const container = document.getElementById('forum-container');
+    container.innerHTML = '';
 
-                container.innerHTML += `
-                    <div class="forum-module" onclick="toggleComment('${item.id}')">
-                        <div style="font-weight: bold; font-size: 1.1rem;">${item.name}</div>
-                        <div style="font-size: 0.85rem; margin-top: 5px;">全网总分数: <strong style="color: #8b0000;">-${item.count}</strong> / -250</div>
-                        <div class="progress-container"><div class="progress-bar" style="width: ${progressPercent}%;"></div></div>
-                        <div class="comment-section" id="comment_${item.id}" onclick="event.stopPropagation()">
-                            ${commentsHTML}
-                            <div style="margin-top: 15px; border-top: 1px dashed #999; padding-top: 10px;">
-                                <textarea id="input_${item.id}" rows="2" placeholder="写下你的入坑指南..."></textarea>
-                                <button id="btn_${item.id}" onclick="submitForum('${item.id}', ${item.count})" style="margin-top:5px; width: 100%;" ${hasCommented?'disabled':''}>${hasCommented?'🕳 已入坑':'入坑'}</button>
-                            </div>
+    globalForumData.forEach(item => {
+        const progressPercent = Math.min((item.count / 250) * 100, 100);
+        const hasCommented = localStorage.getItem(`pit_commented_${item.id}`);
+
+        // 1. 这里改成：拿「这个专业的所有评论」
+        // globalCommentsData 在上面 fetchAllForumData 里已经按时间倒序拉好了
+        const majorComments = globalCommentsData.filter(c => c.major_id === item.id);
+
+        // 2. 标题从「Top 3」改成「所有吐槽」
+        let commentsHTML = '<div style="margin-bottom: 10px; font-size: 0.9rem;"><strong>🕳 该专业所有吐槽：</strong></div>';
+
+        if (majorComments.length > 0) {
+            majorComments.forEach(c => {
+                const hasLiked = localStorage.getItem(`pit_liked_${c.id}`);
+                commentsHTML += `
+                    <div class="hot-comment">
+                        "${c.content}"
+                        <div class="hot-comment-footer" style="margin-top:4px;">
+                            <button
+                                class="like-btn"
+                                onclick="likeComment(event, ${c.id}, ${c.likes})"
+                                ${hasLiked ? 'disabled' : ''}
+                            >
+                                👍 ${c.likes}
+                            </button>
                         </div>
-                    </div>`;
+                    </div>
+                `;
             });
+        } else {
+            commentsHTML += `
+                <div style="color:#888; margin-bottom: 15px; font-size:0.85rem;">
+                    暂无吐槽，欢迎第一个入坑的人来留言。
+                </div>
+            `;
         }
+
+        // 3. 在评论输入框下面，加一行说明「如需添加新的坑请联系小叶学姐」
+        container.innerHTML += `
+            <div class="forum-module" onclick="toggleComment('${item.id}')">
+                <div style="font-weight: bold; font-size: 1.1rem;">${item.name}</div>
+                <div style="font-size: 0.85rem; margin-top: 5px;">
+                    全网总分数: <strong style="color: #8b0000;">-${item.count}</strong> / -250
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: ${progressPercent}%;"></div>
+                </div>
+                <div class="comment-section" id="comment_${item.id}" onclick="event.stopPropagation()">
+                    ${commentsHTML}
+                    <div style="margin-top: 15px; border-top: 1px dashed #999; padding-top: 10px;">
+                        <textarea id="input_${item.id}" rows="2" placeholder="写下你的入坑指南..."></textarea>
+                        <button
+                            id="btn_${item.id}"
+                            onclick="submitForum('${item.id}', ${item.count})"
+                            style="margin-top:5px; width: 100%;"
+                            ${hasCommented ? 'disabled' : ''}
+                        >
+                            ${hasCommented ? '🕳 已入坑' : '入坑'}
+                        </button>
+                    </div>
+                    <div
+                        style="
+                            margin-top: 10px;
+                            font-size: 0.8rem;
+                            color: #555;
+                            background:#fff;
+                            padding:8px;
+                            border:1px dashed #aaa;
+                        "
+                    >
+                        如需添加新的坑（新增专业/方向），请联系小叶学姐，由她在 Supabase 后台添加或删除。
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+}
+</script>
         function toggleComment(id) { const sec = document.getElementById(`comment_${id}`); sec.style.display = sec.style.display === 'block' ? 'none' : 'block'; }
         async function likeComment(e, commentId, currentLikes) { e.stopPropagation(); e.target.innerText = `👍 ${currentLikes + 1}`; e.target.disabled = true; localStorage.setItem(`pit_liked_${commentId}`, 'true'); await _supabase.from('pit_comments').update({ likes: currentLikes + 1 }).eq('id', commentId); }
         async function submitForum(id, currentCount) {
