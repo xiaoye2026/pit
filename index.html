@@ -127,9 +127,13 @@
                 <h2 style="margin:0; font-size: 1.2rem;">Pit Index / 天坑指数</h2>
             </div>
             <div id="loading-msg" style="color:#666;">📡 正在同步全球实验室牛马数据...</div>
+            
             <div id="forum-container"></div>
+
+            <div style="margin-top: 20px; padding: 15px; border: 1px dashed #1c1c1c; background: #fff; text-align: center; font-size: 0.9rem; line-height: 1.6;">
+                📢 <strong style="color: #8b0000;">如需添加新的坑（专业）<br>请联系小叶学姐</strong>
+            </div>
         </div>
-    </div>
 
     <div class="bottom-tools" id="tools-section">
         <div class="tool-box">
@@ -281,89 +285,70 @@
             }
         }
 
-      <script>
 function renderForum() {
-    const container = document.getElementById('forum-container');
-    container.innerHTML = '';
+            const container = document.getElementById('forum-container'); 
+            container.innerHTML = '';
+            
+            globalForumData.forEach(item => {
+                const progressPercent = Math.min((item.count / 250) * 100, 100);
+                const hasCommented = localStorage.getItem(`pit_commented_${item.id}`);
+                
+                // 🛠 修改：过滤出该专业的所有评论，不需要审核状态判断
+                const majorComments = globalCommentsData.filter(c => c.major_id === item.id);
+                
+                let commentsHTML = `<div style="margin-bottom: 10px; font-size: 0.9rem;"><strong>💬 避坑语录 (共 ${majorComments.length} 条):</strong></div>`;
+                
+                // 🛠 修改：增加一个带滚动条的容器，展示所有评论
+                commentsHTML += '<div style="max-height: 350px; overflow-y: auto; padding-right: 5px; border-radius: 4px;">';
+                
+                if (majorComments.length > 0) {
+                    majorComments.forEach(c => {
+                        const hasLiked = localStorage.getItem(`pit_liked_${c.id}`);
+                        commentsHTML += `
+                            <div class="hot-comment">
+                                "${c.content}" 
+                                <div style="text-align: right; margin-top: 5px;">
+                                    <button class="like-btn" onclick="likeComment(event, ${c.id}, ${c.likes})" ${hasLiked?'disabled':''}>👍 ${c.likes}</button>
+                                </div>
+                            </div>`;
+                    });
+                } else { 
+                    commentsHTML += `<div style="color:#888; margin-bottom: 15px; font-size:0.85rem;">目前此坑竟然空空如也，快来第一个入坑。</div>`; 
+                }
+                commentsHTML += '</div>';
 
-    globalForumData.forEach(item => {
-        const progressPercent = Math.min((item.count / 250) * 100, 100);
-        const hasCommented = localStorage.getItem(`pit_commented_${item.id}`);
-
-        // 1. 这里改成：拿「这个专业的所有评论」
-        // globalCommentsData 在上面 fetchAllForumData 里已经按时间倒序拉好了
-        const majorComments = globalCommentsData.filter(c => c.major_id === item.id);
-
-        // 2. 标题从「Top 3」改成「所有吐槽」
-        let commentsHTML = '<div style="margin-bottom: 10px; font-size: 0.9rem;"><strong>🕳 该专业所有吐槽：</strong></div>';
-
-        if (majorComments.length > 0) {
-            majorComments.forEach(c => {
-                const hasLiked = localStorage.getItem(`pit_liked_${c.id}`);
-                commentsHTML += `
-                    <div class="hot-comment">
-                        "${c.content}"
-                        <div class="hot-comment-footer" style="margin-top:4px;">
-                            <button
-                                class="like-btn"
-                                onclick="likeComment(event, ${c.id}, ${c.likes})"
-                                ${hasLiked ? 'disabled' : ''}
-                            >
-                                👍 ${c.likes}
-                            </button>
+                container.innerHTML += `
+                    <div class="forum-module" onclick="toggleComment('${item.id}')">
+                        <div style="font-weight: bold; font-size: 1.1rem;">${item.name}</div>
+                        <div style="font-size: 0.85rem; margin-top: 5px;">全网总分数: <strong style="color: #8b0000;">-${item.count}</strong> / -250</div>
+                        <div class="progress-container"><div class="progress-bar" style="width: ${progressPercent}%;"></div></div>
+                        
+                        <div class="comment-section" id="comment_${item.id}" onclick="event.stopPropagation()">
+                            ${commentsHTML}
+                            <div style="margin-top: 15px; border-top: 1px dashed #999; padding-top: 15px;">
+                                <textarea id="input_${item.id}" rows="2" placeholder="写下你的避坑血泪史..."></textarea>
+                                <button id="btn_${item.id}" onclick="submitForum('${item.id}', ${item.count})" style="margin-top:5px; width: 100%;" ${hasCommented?'disabled':''}>${hasCommented?'🕳 感谢你的贡献':'我也要入坑吐槽'}</button>
+                            </div>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
-        } else {
-            commentsHTML += `
-                <div style="color:#888; margin-bottom: 15px; font-size:0.85rem;">
-                    暂无吐槽，欢迎第一个入坑的人来留言。
-                </div>
-            `;
         }
 
-        // 3. 在评论输入框下面，加一行说明「如需添加新的坑请联系小叶学姐」
-        container.innerHTML += `
-            <div class="forum-module" onclick="toggleComment('${item.id}')">
-                <div style="font-weight: bold; font-size: 1.1rem;">${item.name}</div>
-                <div style="font-size: 0.85rem; margin-top: 5px;">
-                    全网总分数: <strong style="color: #8b0000;">-${item.count}</strong> / -250
-                </div>
-                <div class="progress-container">
-                    <div class="progress-bar" style="width: ${progressPercent}%;"></div>
-                </div>
-                <div class="comment-section" id="comment_${item.id}" onclick="event.stopPropagation()">
-                    ${commentsHTML}
-                    <div style="margin-top: 15px; border-top: 1px dashed #999; padding-top: 10px;">
-                        <textarea id="input_${item.id}" rows="2" placeholder="写下你的入坑指南..."></textarea>
-                        <button
-                            id="btn_${item.id}"
-                            onclick="submitForum('${item.id}', ${item.count})"
-                            style="margin-top:5px; width: 100%;"
-                            ${hasCommented ? 'disabled' : ''}
-                        >
-                            ${hasCommented ? '🕳 已入坑' : '入坑'}
-                        </button>
-                    </div>
-                    <div
-                        style="
-                            margin-top: 10px;
-                            font-size: 0.8rem;
-                            color: #555;
-                            background:#fff;
-                            padding:8px;
-                            border:1px dashed #aaa;
-                        "
-                    >
-                        如需添加新的坑（新增专业/方向），请联系小叶学姐，由她在 Supabase 后台添加或删除。
-                    </div>
-                </div>
-            </div>
-        `;
-    });
-}
-</script>
+                container.innerHTML += `
+                    <div class="forum-module" onclick="toggleComment('${item.id}')">
+                        <div style="font-weight: bold; font-size: 1.1rem;">${item.name}</div>
+                        <div style="font-size: 0.85rem; margin-top: 5px;">全网总分数: <strong style="color: #8b0000;">-${item.count}</strong> / -250</div>
+                        <div class="progress-container"><div class="progress-bar" style="width: ${progressPercent}%;"></div></div>
+                        <div class="comment-section" id="comment_${item.id}" onclick="event.stopPropagation()">
+                            ${commentsHTML}
+                            <div style="margin-top: 15px; border-top: 1px dashed #999; padding-top: 10px;">
+                                <textarea id="input_${item.id}" rows="2" placeholder="写下你的入坑指南..."></textarea>
+                                <button id="btn_${item.id}" onclick="submitForum('${item.id}', ${item.count})" style="margin-top:5px; width: 100%;" ${hasCommented?'disabled':''}>${hasCommented?'🕳 已入坑':'入坑'}</button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
         function toggleComment(id) { const sec = document.getElementById(`comment_${id}`); sec.style.display = sec.style.display === 'block' ? 'none' : 'block'; }
         async function likeComment(e, commentId, currentLikes) { e.stopPropagation(); e.target.innerText = `👍 ${currentLikes + 1}`; e.target.disabled = true; localStorage.setItem(`pit_liked_${commentId}`, 'true'); await _supabase.from('pit_comments').update({ likes: currentLikes + 1 }).eq('id', commentId); }
         async function submitForum(id, currentCount) {
