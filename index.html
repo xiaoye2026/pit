@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+修改一些字符，按照这个来：<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -30,8 +30,7 @@
         .paper-item { margin-bottom: 25px; padding: 15px; border: 2px solid #1c1c1c; background: #fff; box-shadow: 4px 4px 0px #e3e3e0; transition: background 0.2s; }
         .paper-item:hover { background-color: #fafafa; }
         .paper-title { font-size: 1.2rem; font-weight: bold; color: #111; display: block; margin-bottom: 5px; cursor: pointer; }
-        /* 去掉了这里的 font-style: italic; */
-        .paper-meta { font-size: 0.8rem; color: #555; margin-bottom: 10px; }
+        .paper-meta { font-size: 0.8rem; color: #555; font-style: italic; margin-bottom: 10px; }
         .paper-abstract { font-size: 0.95rem; background: #ebebe8; padding: 10px; border-left: 3px solid #1c1c1c; margin: 10px 0; color: #444; }
         .paper-footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; margin-top: 10px;}
 
@@ -43,8 +42,7 @@
         .progress-container { width: 100%; height: 15px; border: 2px solid #1c1c1c; background: #fff; margin-top: 10px; overflow: hidden; }
         .progress-bar { height: 100%; background: #1c1c1c; transition: width 0.5s ease; }
         .comment-section { display: none; margin-top: 15px; border-top: 1px dashed #1c1c1c; padding-top: 15px; cursor: default; }
-        /* 去掉了这里的 font-style: italic; */
-        .hot-comment { font-size: 0.85rem; color: #222; margin-bottom: 10px; background: #fff; padding: 8px; border: 1px solid #ccc;}
+        .hot-comment { font-size: 0.85rem; color: #222; margin-bottom: 10px; background: #fff; padding: 8px; border: 1px solid #ccc; font-style: italic;}
         .hot-comment-footer { text-align: right; margin-top: 5px; }
 
         /* 按钮与输入框 (源自第二版) */
@@ -83,7 +81,7 @@
                 <h2 style="margin:0; font-size: 1.2rem;">Current Issue / 最新文献</h2>
                 <button onclick="document.getElementById('submitModal').showModal()">Submit / 投稿</button>
             </div>
-            <div id="papers-container" style="color:#666;">📡 同步中...</div>
+            <div id="papers-container" style="font-style:italic; color:#666;">📡 同步中...</div>
             <div class="pagination" id="page-ctrl"></div>
         </div>
 
@@ -91,7 +89,7 @@
             <div class="section-title">
                 <h2 style="margin:0; font-size: 1.2rem;">Pit Index / 天坑指数</h2>
             </div>
-            <div id="loading-msg" style="color:#666;">📡 正在同步全球实验室牛马数据...</div>
+            <div id="loading-msg" style="font-style:italic; color:#666;">📡 正在同步全球实验室牛马数据...</div>
             <div id="forum-container"></div>
         </div>
     </div>
@@ -118,7 +116,7 @@
         const p2 = 'eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxidWh0amV6bGtpcmt4YmZnd3Z0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1Mzk0OTksImV4cCI6MjA4ODExNTQ5OX0.dBP_u7PXyy9D_mCYGYDkDzvOArDBcQ6Qf8FO0wdO5lg';
         const _supabase = supabase.createClient(supabaseUrl, p1 + p2);
 
-        /* ================= 1. 文献区逻辑 ================= */
+        /* ================= 1. 文献区逻辑 (严格依照第一版：带分页、摘要、全文) ================= */
         let curPage = 1;
         const pageSize = 10;
 
@@ -188,7 +186,7 @@
             fetchPapers();
         }
 
-        /* ================= 2. 论坛区逻辑 ================= */
+        /* ================= 2. 论坛区逻辑 (严格依照第二版：Top3热评、折叠、坠落) ================= */
         let globalForumData = [];
         let globalCommentsData = [];
 
@@ -214,6 +212,7 @@
                 const progressPercent = Math.min((item.count / 250) * 100, 100);
                 const hasCommented = localStorage.getItem(`pit_commented_${item.id}`);
                 
+                // 筛选出前 3 条最热评论
                 const topComments = globalCommentsData.filter(c => c.major_id === item.id).slice(0, 3);
                 
                 let commentsHTML = '<div style="margin-bottom: 10px; font-size: 0.9rem;"><strong>🔥 Top 3 天坑语录:</strong></div>';
@@ -232,8 +231,7 @@
                         `;
                     });
                 } else {
-                    /* 去掉了 font-style:italic; */
-                    commentsHTML += `<div style="color:#888; margin-bottom: 15px; font-size:0.85rem;">暂无吐槽，等待第一位怨种。</div>`;
+                    commentsHTML += `<div style="color:#888; font-style:italic; margin-bottom: 15px; font-size:0.85rem;">暂无吐槽，等待第一位怨种。</div>`;
                 }
 
                 container.innerHTML += `
