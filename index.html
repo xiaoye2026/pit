@@ -1,4 +1,4 @@
-修改一些字符，按照这个来：<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -6,46 +6,53 @@
     <title>PIT: Journal of Professional Inutile Training</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* 基础样式及配色 (源自第二版) */
+        /* 基础样式及配色 */
         body { font-family: "Times New Roman", STSong, "SimSun", serif; background-color: #f4f4f2; color: #1c1c1c; max-width: 1100px; margin: 0 auto; padding: 30px 20px; line-height: 1.6; }
         h1, h2, h3, h4 { font-weight: 700; letter-spacing: 0.5px; color: #111; }
         a { color: #1c1c1c; text-decoration: none; transition: all 0.2s ease; }
         a:hover { background-color: #e3e3e0; }
 
-        /* 刊头 (源自第一版内容 + 第二版风格) */
+        /* 刊头 */
         .header-title { text-align: center; border-bottom: 4px solid #1c1c1c; padding-bottom: 20px; margin-bottom: 40px; }
         
         /* 导航 */
         .nav { text-align: center; margin-bottom: 40px; font-size: 1.05rem; font-weight: bold; text-transform: uppercase; }
         .nav a { margin: 0 15px; border-bottom: 1px solid #1c1c1c; padding-bottom: 2px; }
 
-        /* 左右排版 (源自第一版) */
+        /* 左右排版 */
         .layout-wrapper { display: flex; flex-wrap: wrap; gap: 40px; }
         .main-col { flex: 2; min-width: 350px; }
         .side-col { flex: 1; min-width: 320px; border-left: 2px solid #1c1c1c; padding-left: 30px; }
 
         .section-title { border-top: 2px solid #1c1c1c; border-bottom: 2px solid #1c1c1c; padding: 10px 0; margin-bottom: 20px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center;}
 
-        /* 文献列表样式 (第一版结构 + 第二版UI) */
+        /* 文献列表样式 */
         .paper-item { margin-bottom: 25px; padding: 15px; border: 2px solid #1c1c1c; background: #fff; box-shadow: 4px 4px 0px #e3e3e0; transition: background 0.2s; }
         .paper-item:hover { background-color: #fafafa; }
         .paper-title { font-size: 1.2rem; font-weight: bold; color: #111; display: block; margin-bottom: 5px; cursor: pointer; }
-        .paper-meta { font-size: 0.8rem; color: #555; font-style: italic; margin-bottom: 10px; }
+        .paper-meta { font-size: 0.8rem; color: #555; margin-bottom: 10px; }
         .paper-abstract { font-size: 0.95rem; background: #ebebe8; padding: 10px; border-left: 3px solid #1c1c1c; margin: 10px 0; color: #444; }
         .paper-footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; margin-top: 10px;}
 
-        /* 第一版的分页器 */
+        /* 分页器 */
         .pagination { display: flex; justify-content: center; gap: 10px; margin-top: 20px; font-size: 0.9rem; font-weight: bold;}
 
-        /* 论坛模块样式 (源自第二版) */
+        /* 论坛与生成器模块样式 */
         .forum-module { border: 2px solid #1c1c1c; background-color: #ebebe8; padding: 15px; margin-bottom: 20px; cursor: pointer; position: relative;}
         .progress-container { width: 100%; height: 15px; border: 2px solid #1c1c1c; background: #fff; margin-top: 10px; overflow: hidden; }
         .progress-bar { height: 100%; background: #1c1c1c; transition: width 0.5s ease; }
         .comment-section { display: none; margin-top: 15px; border-top: 1px dashed #1c1c1c; padding-top: 15px; cursor: default; }
-        .hot-comment { font-size: 0.85rem; color: #222; margin-bottom: 10px; background: #fff; padding: 8px; border: 1px solid #ccc; font-style: italic;}
+        .hot-comment { font-size: 0.85rem; color: #222; margin-bottom: 10px; background: #fff; padding: 8px; border: 1px solid #ccc;}
         .hot-comment-footer { text-align: right; margin-top: 5px; }
+        
+        /* 废话生成器特有框 */
+        .jargon-box { border: 2px solid #1c1c1c; padding: 15px; background: #fff; text-align: center; }
+        .jargon-text { font-size: 0.95rem; color: #111; min-height: 70px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; border-bottom: 1px dashed #ccc; padding-bottom: 15px;}
 
-        /* 按钮与输入框 (源自第二版) */
+        /* 底部联系我们页脚 */
+        .site-footer { margin-top: 60px; border-top: 4px solid #1c1c1c; padding-top: 30px; padding-bottom: 20px; text-align: center; clear: both;}
+        
+        /* 按钮与输入框 */
         button { padding: 6px 12px; background: #1c1c1c; color: #f4f4f2; border: 1px solid #1c1c1c; font-weight: bold; cursor: pointer; font-size: 0.85rem; font-family: inherit; }
         button:hover:not(:disabled) { background: #f4f4f2; color: #1c1c1c; box-shadow: 2px 2px 0px #1c1c1c; }
         button:disabled { background: #888; border-color: #888; color: #fff; cursor: not-allowed; box-shadow: none; }
@@ -56,7 +63,7 @@
 
         input[type="text"], textarea { border: 1px solid #1c1c1c; background-color: #fff; padding: 8px; font-family: inherit; width: 100%; box-sizing: border-box; margin-bottom: 10px;}
 
-        /* 弹窗样式 (源自第二版) */
+        /* 弹窗样式 */
         dialog { border: 4px solid #1c1c1c; background: #f4f4f2; padding: 30px; max-width: 600px; width: 90%; box-shadow: 8px 8px 0px #1c1c1c; font-family: inherit; }
         dialog::backdrop { background: rgba(0, 0, 0, 0.7); }
         .close-btn { background: transparent; color: #1c1c1c; border: none; float: right; font-size: 1.5rem; margin-top: -20px; margin-right: -20px; line-height: 1;}
@@ -73,6 +80,7 @@
     <div class="nav">
         <a href="#papers">Latest Issue / 最新文献</a>
         <a href="#forum">Pit Index / 天坑指数</a>
+        <a href="#footer">Contact / 联系我们</a>
     </div>
 
     <div class="layout-wrapper">
@@ -81,7 +89,7 @@
                 <h2 style="margin:0; font-size: 1.2rem;">Current Issue / 最新文献</h2>
                 <button onclick="document.getElementById('submitModal').showModal()">Submit / 投稿</button>
             </div>
-            <div id="papers-container" style="font-style:italic; color:#666;">📡 同步中...</div>
+            <div id="papers-container" style="color:#666;">📡 同步中...</div>
             <div class="pagination" id="page-ctrl"></div>
         </div>
 
@@ -89,10 +97,25 @@
             <div class="section-title">
                 <h2 style="margin:0; font-size: 1.2rem;">Pit Index / 天坑指数</h2>
             </div>
-            <div id="loading-msg" style="font-style:italic; color:#666;">📡 正在同步全球实验室牛马数据...</div>
+            <div id="loading-msg" style="color:#666;">📡 正在同步全球实验室牛马数据...</div>
             <div id="forum-container"></div>
+
+            <div class="section-title" style="margin-top: 40px;">
+                <h2 style="margin:0; font-size: 1.2rem;">BS Generator / 学术废话生成器</h2>
+            </div>
+            <div class="jargon-box">
+                <div class="jargon-text" id="jargon-display">点击下方按钮，生成一句高大上的学术废话，填补你的字数与灵魂。</div>
+                <button onclick="generateJargon()" style="width: 100%;">Generate / 生成废话</button>
+            </div>
         </div>
     </div>
+
+    <footer class="site-footer" id="footer">
+        <h3 style="margin-bottom: 10px; font-size: 1.1rem; text-transform: uppercase;">Contact Us / 联系我们</h3>
+        <p style="font-size: 0.9rem; color: #444; margin: 5px 0;">如果你在天坑专业受苦受难，或者想合作发表“废话”水刊，请联系我们：</p>
+        <p style="font-size: 1rem; font-weight: bold; margin: 10px 0;">Email: <a href="mailto:pit.journal@inutile.edu" style="text-decoration: underline;">pit.journal@inutile.edu</a></p>
+        <p style="font-size: 0.8rem; color: #666; margin-top: 20px;">© 2026 PIT Journal. All Rights Reserved. (本页面最终解释权归小叶所有，不接受反驳)</p>
+    </footer>
 
     <dialog id="submitModal">
         <button class="close-btn" onclick="document.getElementById('submitModal').close()">✖</button>
@@ -116,7 +139,7 @@
         const p2 = 'eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxidWh0amV6bGtpcmt4YmZnd3Z0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1Mzk0OTksImV4cCI6MjA4ODExNTQ5OX0.dBP_u7PXyy9D_mCYGYDkDzvOArDBcQ6Qf8FO0wdO5lg';
         const _supabase = supabase.createClient(supabaseUrl, p1 + p2);
 
-        /* ================= 1. 文献区逻辑 (严格依照第一版：带分页、摘要、全文) ================= */
+        /* ================= 1. 文献区逻辑 ================= */
         let curPage = 1;
         const pageSize = 10;
 
@@ -177,7 +200,6 @@
             btn.innerText = "发表文献"; btn.disabled = false;
             document.getElementById('submitModal').close();
             
-            // 清空表单并刷新
             document.getElementById('p-title').value = '';
             document.getElementById('p-author').value = '';
             document.getElementById('p-abstract').value = '';
@@ -186,7 +208,7 @@
             fetchPapers();
         }
 
-        /* ================= 2. 论坛区逻辑 (严格依照第二版：Top3热评、折叠、坠落) ================= */
+        /* ================= 2. 论坛区逻辑 ================= */
         let globalForumData = [];
         let globalCommentsData = [];
 
@@ -212,7 +234,6 @@
                 const progressPercent = Math.min((item.count / 250) * 100, 100);
                 const hasCommented = localStorage.getItem(`pit_commented_${item.id}`);
                 
-                // 筛选出前 3 条最热评论
                 const topComments = globalCommentsData.filter(c => c.major_id === item.id).slice(0, 3);
                 
                 let commentsHTML = '<div style="margin-bottom: 10px; font-size: 0.9rem;"><strong>🔥 Top 3 天坑语录:</strong></div>';
@@ -231,7 +252,7 @@
                         `;
                     });
                 } else {
-                    commentsHTML += `<div style="color:#888; font-style:italic; margin-bottom: 15px; font-size:0.85rem;">暂无吐槽，等待第一位怨种。</div>`;
+                    commentsHTML += `<div style="color:#888; margin-bottom: 15px; font-size:0.85rem;">暂无吐槽，等待第一位怨种。</div>`;
                 }
 
                 container.innerHTML += `
@@ -285,6 +306,19 @@
             
             document.getElementById(`input_${id}`).value = '';
             fetchAllForumData();
+        }
+
+        /* ================= 3. 新增：学术废话生成器逻辑 ================= */
+        function generateJargon() {
+            const part1 = ["基于多模态融合的", "面向复杂场景的", "一种新型的", "基于深度图网络的", "具有自适应特征的", "针对异构数据的", "依托底层逻辑的", "解构传统范式的"];
+            const part2 = ["协同演化机制", "动态耦合框架", "非线性交互模型", "隐式表征策略", "多维度评估范式", "鲁棒性增强算法", "闭环赋能矩阵", "下沉式生命周期"];
+            const part3 = ["，显著提升了系统的边缘泛化能力。", "，为解决该领域痛点提供了新的理论支撑。", "，有效打破了传统方法的性能瓶颈。", "，实现了端到端的高效范式转移。", "，在理论层面上具有一定的前瞻性。", "，打通了全链路的生态闭环。"];
+            
+            const p1 = part1[Math.floor(Math.random() * part1.length)];
+            const p2 = part2[Math.floor(Math.random() * part2.length)];
+            const p3 = part3[Math.floor(Math.random() * part3.length)];
+            
+            document.getElementById('jargon-display').innerText = p1 + p2 + p3;
         }
 
         window.onload = () => {
