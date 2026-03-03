@@ -3,188 +3,168 @@
 <head>
   <meta charset="UTF-8">
   <title>PIT: Journal of Professional Inutile Training (天坑专业收容所)</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      background-color: #ffffff;
-      color: #000000;
-      font-family: "Times New Roman", "SimSun", "SimHei", serif;
-    }
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    .page {
-      max-width: 960px;
-      margin: 24px auto 40px auto;
-      padding: 0 16px;
-      box-sizing: border-box;
-    }
-    header {
-      border-bottom: 1px solid #000;
-      padding-bottom: 10px;
-      margin-bottom: 16px;
-    }
-    h1 {
-      font-size: 26px;
-      font-weight: bold;
-      margin: 0 0 6px 0;
-    }
-    .subtitle {
-      font-size: 12px;
-      margin: 0;
-    }
-    .meta {
-      font-size: 10px;
-      margin-top: 4px;
-    }
-    .nav {
-      font-size: 12px;
-      margin-top: 8px;
-    }
-    .nav a {
-      margin-right: 12px;
-    }
-    section {
-      margin: 24px 0;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-    section h2 {
-      font-size: 16px;
-      margin: 0 0 8px 0;
-      border-bottom: 1px solid #000;
-      padding-bottom: 4px;
-    }
-    .hero {
-      text-align: center;
-      margin: 40px 0 32px 0;
-    }
-    .hero-main {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    .hero-sub {
-      font-size: 14px;
-    }
-    .two-column {
-      display: grid;
-      grid-template-columns: 3fr 1fr;
-      column-gap: 24px;
-    }
-    .article {
-      border-bottom: 1px solid #ddd;
-      padding: 10px 0 12px 0;
-    }
-    .article:last-child {
-      border-bottom: none;
-    }
-    .article-header {
-      font-size: 13px;
-      margin-bottom: 4px;
-    }
-    .article-title {
-      font-weight: bold;
-    }
-    .article-author {
-      font-style: italic;
-    }
-    .article-abstract-label {
-      font-weight: bold;
-    }
-    .article-abstract {
-      margin-top: 2px;
-      text-indent: 2em;
-    }
-    .pit-index-block {
-      font-size: 13px;
-      line-height: 1.8;
-    }
-    .pit-index-block ul {
-      padding-left: 18px;
-      margin: 6px 0 0 0;
-    }
-    .pit-index-block li {
-      margin-bottom: 2px;
-    }
-    .impact {
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
-    .bottomless {
-      font-size: 13px;
-      line-height: 1.7;
-    }
-    .pit-button {
-      display: inline-block;
-      margin-top: 8px;
-      padding: 4px 10px;
-      border: 1px solid #000;
-      font-size: 12px;
-      cursor: pointer;
-      background-color: #fff;
-    }
-    .generator {
-      margin-top: 16px;
-      border: 1px solid #000;
-      padding: 10px;
-      font-size: 12px;
-    }
-    .generator-label {
-      font-weight: bold;
-      margin-bottom: 4px;
-    }
-    .generator-input-row {
-      margin-bottom: 8px;
-    }
-    .generator-input {
-      width: 60%;
-      padding: 2px 4px;
-      font-family: inherit;
-      font-size: 12px;
-      border: 1px solid #777;
-      box-sizing: border-box;
-    }
-    .generator-button {
-      padding: 2px 8px;
-      margin-left: 6px;
-      border: 1px solid #000;
-      background-color: #fff;
-      cursor: pointer;
-      font-size: 12px;
-      font-family: inherit;
-    }
-    .generator-output {
-      border: 1px solid #ccc;
-      padding: 6px;
-      min-height: 60px;
-      white-space: pre-wrap;
-      margin-top: 4px;
-    }
-    footer {
-      border-top: 1px solid #000;
-      margin-top: 32px;
-      padding-top: 8px;
-      font-size: 10px;
-    }
-  </style>
+ <style>
+        /* 构石 (The Stone) 专属视觉系统 */
+        body {
+            font-family: "Times New Roman", STSong, "SimSun", serif; /* 强化传统印刷体 */
+            background-color: #f4f4f2; /* 石板灰/复古纸张底色，不再是刺眼的纯白 */
+            color: #1c1c1c; /* 墨黑，比纯黑更有质感 */
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 50px 20px;
+            line-height: 1.7;
+        }
+        
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            letter-spacing: 0.5px; /* 增加一点字间距，产生碑刻感 */
+            color: #111;
+        }
+
+        /* 顶部标题特调：产生类似期刊封面的厚重感 */
+        .header-title {
+            text-align: center;
+            border-bottom: 4px solid #1c1c1c; /* 极粗的底线 */
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+
+        a {
+            color: #1c1c1c;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+        a:hover {
+            border-bottom: 1px solid #1c1c1c;
+            background-color: #e3e3e0; /* 鼠标悬停时出现浅石块色 */
+        }
+
+        /* 导航栏排版优化 */
+        .nav {
+            text-align: center;
+            margin-bottom: 60px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            text-transform: uppercase; /* 英文全大写，更有学术感 */
+        }
+        .nav a {
+            margin: 0 15px;
+            border-bottom: 1px solid #1c1c1c;
+            padding-bottom: 2px;
+        }
+
+        /* 核心 Slogan 区域（模仿石碑雕刻框） */
+        .hero {
+            text-align: center;
+            margin: 60px 0;
+            padding: 50px 20px;
+            border: 2px solid #1c1c1c; /* 粗实线边框 */
+            background-color: #ebebe8; /* 框内稍微加深一点 */
+            box-shadow: 4px 4px 0px #1c1c1c; /* 产生硬朗的立体阴影感 */
+        }
+        .hero h2 {
+            font-size: 1.9rem;
+            margin: 0;
+        }
+        .hero p {
+            font-size: 1.1rem;
+            color: #444;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        /* 栏目标题（双粗线修饰） */
+        .section-title {
+            border-top: 2px solid #1c1c1c;
+            border-bottom: 2px solid #1c1c1c;
+            padding: 10px 0;
+            margin-top: 60px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        /* 论文列表的边框从虚线改为实线 */
+        .paper-item {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+        }
+        .paper-title {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+        .paper-author {
+            font-style: italic;
+            font-size: 0.95rem;
+            margin-top: 0;
+            color: #555;
+        }
+        .abstract {
+            font-size: 0.95rem;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #ebebe8; /* 摘要背景加上浅灰色块 */
+            border-left: 4px solid #1c1c1c; /* 左侧加粗墨线 */
+        }
+
+        /* 互动区域（评分和生成器） */
+        .interactive-box {
+            margin: 40px 0;
+            padding: 30px;
+            border: 2px solid #1c1c1c;
+            background-color: #fafafa;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+        }
+        
+        input, textarea, button {
+            font-family: "Times New Roman", STSong, "SimSun", serif;
+        }
+        
+        /* 构石风格按钮：黑底白字，四方四正 */
+        button {
+            padding: 10px 20px;
+            background: #1c1c1c;
+            color: #f4f4f2;
+            border: 1px solid #1c1c1c;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+        button:hover {
+            background: #f4f4f2;
+            color: #1c1c1c;
+            box-shadow: 2px 2px 0px #1c1c1c;
+        }
+        button:disabled {
+            background: #aaa;
+            border-color: #aaa;
+            color: #fff;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* 输入框的复古感 */
+        input[type="text"], textarea {
+            border: 1px solid #1c1c1c;
+            background-color: transparent;
+            border-radius: 0; /* 去掉圆角 */
+        }
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            background-color: #fff;
+            border-width: 2px;
+        }
+    </style>
 </head>
 <body>
-  <div class="page">
-    <header id="home">
-      <h1>PIT: Journal of Professional Inutile Training (天坑专业收容所)</h1>
-      <p class="subtitle">
-        An informal archive for rigorously useless work in biochemical, environmental, materials and related disciplines.<br>
-        一个专门收容生化环材等领域精心完成、完全无用研究的非正式学术存档。
-      </p>
-      <div class="meta">
-        Vol. 1 &bull; No. 1 &bull; ISSN 0000-000X
-      </div>
+<div class="header-title">
+    <h1 style="font-size: 2.5rem; margin-bottom: 5px;">PIT: Journal of Professional Inutile Training</h1>
+    <p style="margin-top: 0; font-size: 1.1rem;">PIT: 天坑专业收容所</p>
+    <p style="font-size: 0.8rem; color: #666; text-transform: uppercase; letter-spacing: 1px;">ISSN 0000-0250 | Est. 2026 | The Stone Zone</p>
+</div>
       <nav class="nav">
         <a href="#home">Home / 流程主页</a>
         <a href="#current-issue">Current Issue / 最新文章</a>
