@@ -6,159 +6,187 @@
     <title>PIT: Journal of Professional Inutile Training</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        :root { --main-color: #1c1c1c; --bg-color: #f4f4f2; --accent-red: #b22222; --accent-blue: #2c3e50; }
-        body { font-family: "Times New Roman", Times, "Songti SC", serif; background-color: var(--bg-color); color: var(--main-color); max-width: 1200px; margin: 0 auto; padding: 20px; line-height: 1.7; }
+        :root { 
+            --main-color: #1c1c1c; 
+            --bg-color: #f4f4f2; 
+            --accent-red: #b22222; 
+            --card-bg: #ffffff;
+        }
         
-        /* Header & Slogan */
-        .header { text-align: center; border-bottom: 5px double var(--main-color); padding-bottom: 20px; margin-bottom: 30px; }
-        .header h1 { font-size: 3.5rem; margin: 0; font-weight: 900; letter-spacing: -1px; }
-        .slogan-box { text-align: center; margin-bottom: 40px; }
-        .slogan-en { font-size: 1.8rem; font-weight: bold; margin: 0; }
-        .slogan-cn { font-size: 2.2rem; font-weight: 900; margin: 10px 0; color: #000; }
+        /* 基础设置：加大字号与行高 */
+        body { 
+            font-family: "Times New Roman", Times, "Songti SC", "SimSun", serif; 
+            background-color: var(--bg-color); 
+            color: var(--main-color); 
+            max-width: 1300px; 
+            margin: 0 auto; 
+            padding: 30px; 
+            line-height: 1.8; /* 增加行间距 */
+            font-size: 1.15rem; /* 全局字号提升 */
+        }
+        
+        /* 刊头：极具压迫感的大标题 */
+        .header { text-align: center; border-bottom: 6px double var(--main-color); padding-bottom: 30px; margin-bottom: 40px; }
+        .header h1 { font-size: 4rem; margin: 0; font-weight: 900; letter-spacing: -2px; }
+        .header p { font-size: 1.1rem; letter-spacing: 4px; text-transform: uppercase; margin-top: 10px; }
 
-        .nav { text-align: center; margin-bottom: 40px; font-weight: bold; border-bottom: 1px solid #000; padding-bottom: 10px; }
-        .nav a { margin: 0 15px; text-decoration: none; color: var(--main-color); }
-        .nav a:hover { text-decoration: underline; }
+        /* Slogan：视觉中心，大、黑、粗 */
+        .slogan-box { text-align: center; margin: 60px 0; padding: 40px; border: 1px solid #ddd; background: #fff; }
+        .slogan-en { font-size: 2.2rem; font-weight: 800; margin: 0; display: block; line-height: 1.2; }
+        .slogan-cn { font-size: 2.8rem; font-weight: 900; margin: 20px 0 0 0; color: #000; display: block; }
 
-        /* Layout */
-        .layout { display: flex; flex-wrap: wrap; gap: 30px; }
-        .main-col { flex: 1.8; min-width: 350px; }
-        .side-col { flex: 1.2; min-width: 320px; border-left: 2px solid var(--main-color); padding-left: 25px; }
+        /* 导航条 */
+        .nav { text-align: center; margin-bottom: 50px; font-weight: bold; border-bottom: 2px solid #000; padding-bottom: 15px; font-size: 1.2rem; }
+        .nav a { margin: 0 20px; text-decoration: none; color: var(--main-color); transition: 0.3s; }
+        .nav a:hover { color: var(--accent-red); border-bottom: 2px solid var(--accent-red); }
 
-        .section-title { border-top: 2px solid var(--main-color); border-bottom: 2px solid var(--main-color); padding: 8px 15px; margin-bottom: 20px; background: #e9e9e9; display: flex; justify-content: space-between; align-items: center; }
+        /* 布局控制 */
+        .layout { display: flex; flex-wrap: wrap; gap: 40px; }
+        .main-col { flex: 2; min-width: 400px; }
+        .side-col { flex: 1.2; min-width: 350px; border-left: 3px solid var(--main-color); padding-left: 35px; }
 
-        /* Pit Index Table */
-        .pi-card { background: #fff; border: 1px solid #000; padding: 15px; margin-bottom: 15px; }
-        .pi-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .pi-score { font-size: 1.5rem; font-weight: 900; color: var(--accent-red); }
-        .vote-area { display: flex; align-items: center; gap: 10px; margin-top: 10px; border-top: 1px dashed #ccc; padding-top: 10px; }
-        .vote-input { width: 80px !important; margin-bottom: 0 !important; }
+        /* 栏目标题 */
+        .section-title { 
+            background: #000; 
+            color: #fff; 
+            padding: 12px 20px; 
+            margin-bottom: 25px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .section-title h2 { margin: 0; font-size: 1.4rem; letter-spacing: 1px; }
 
-        /* AI Generator */
-        .ai-box { background: #fff; border: 2px solid #000; padding: 20px; box-shadow: 8px 8px 0px #000; }
-        #bs-output { white-space: pre-wrap; background: #fdfdfd; border: 1px solid #ddd; padding: 15px; margin-top: 15px; min-height: 100px; font-family: serif; }
+        /* PI Index 卡片：强化打分感 */
+        .pi-card { background: var(--card-bg); border: 2px solid #000; padding: 20px; margin-bottom: 20px; transition: transform 0.2s; }
+        .pi-card:hover { transform: translateY(-3px); box-shadow: 5px 5px 0px #000; }
+        .pi-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .pi-major-name { font-size: 1.6rem; font-weight: 900; }
+        .pi-score { font-size: 2.2rem; font-weight: 950; color: var(--accent-red); font-family: "Arial Black", sans-serif; }
+        .pi-desc { font-size: 1rem; color: #555; border-left: 3px solid #eee; padding-left: 10px; }
+        .vote-area { display: flex; align-items: center; gap: 15px; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc; }
+        .vote-input { width: 100px !important; font-size: 1.1rem !important; height: 40px; text-align: center; }
 
-        /* UI Elements */
-        input, textarea, select { width: 100%; padding: 8px; border: 1px solid #000; margin-bottom: 10px; font-family: inherit; }
-        button { background: #000; color: #fff; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        button:hover { background: #444; }
-        button:disabled { background: #ccc; cursor: not-allowed; }
+        /* 文献列表 */
+        .paper-item { background: #fff; border: 1px solid #000; padding: 25px; margin-bottom: 30px; box-shadow: 4px 4px 0 #eee; }
+        .paper-title { font-size: 1.6rem; font-weight: 800; color: #000; display: block; margin-bottom: 12px; line-height: 1.3; }
+        .paper-meta { font-size: 0.95rem; color: #777; margin-bottom: 15px; }
+        .paper-abstract { font-size: 1.1rem; background: #f9f9f9; padding: 20px; border-left: 6px solid #000; color: #222; }
 
-        /* Paper Item */
-        .paper-item { background: #fff; border: 1px solid #000; padding: 15px; margin-bottom: 20px; }
-        .paper-title { font-size: 1.2rem; font-weight: bold; text-decoration: none; color: #000; display: block; }
+        /* AI 生成器：更有互动感 */
+        .ai-box { background: #fff; border: 3px solid #000; padding: 30px; box-shadow: 12px 12px 0px #000; }
+        #bs-output { font-size: 1.15rem; background: #fdfdfb; border: 1px dashed #999; padding: 20px; margin-top: 20px; min-height: 120px; line-height: 1.8; }
 
-        .footer-banner { margin-top: 60px; padding: 40px; border: 5px dashed #000; text-align: center; }
+        /* UI 增强 */
+        button { background: #000; color: #fff; border: none; padding: 12px 25px; cursor: pointer; font-weight: bold; font-size: 1rem; }
+        button:hover { background: var(--accent-red); }
+        input, textarea { font-size: 1.1rem; padding: 12px; border: 2px solid #000; margin-bottom: 15px; }
+
+        /* Footer */
+        .footer-banner { margin-top: 80px; padding: 60px; border: 8px dashed #000; text-align: center; background: #fff; }
+        .footer-banner h2 { font-size: 3rem; font-weight: 900; margin-bottom: 10px; }
+
+        /* 弹窗样式 */
+        dialog { border: 6px solid #000; width: 90%; max-width: 700px; padding: 40px; font-size: 1.2rem; }
+        dialog h3 { font-size: 2rem; margin-top: 0; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <h1>PIT: Journal of Professional Inutile Training</h1>
-        <p style="letter-spacing: 3px;">EST. 2026 | ISSN: 0000-0250 | 投稿/合作: jpit_pit@163.com</p>
+        <p>EST. 2026 | ISSN: 0000-0250 | 联合主办: 坑底全球委员会</p>
     </div>
 
     <div class="slogan-box">
-        <p class="slogan-en">Focusing on Research That Changes Absolutely Nothing</p>
-        <p class="slogan-cn">既然深陷坑底，不如挖得更有创意——极致的无用之美。</p>
+        <span class="slogan-en">Focusing on Research That Changes Absolutely Nothing</span>
+        <span class="slogan-cn">既然深陷坑底，不如挖得更有创意——极致的无用之美。</span>
     </div>
 
     <div class="nav">
-        <a href="#papers">Current Issue / 最新文章</a>
-        <a href="#forum">Pit Index (PI) / 天坑指数</a>
-        <a href="#ai">Abstract Generator / 废话生成器</a>
-        <a href="#bottomless">Bottomless Pit / 无底洞专区</a>
+        <a href="#papers">LATEST ISSUE 最新文章</a>
+        <a href="#forum">PIT INDEX 天坑指数</a>
+        <a href="#ai">AI GENERATOR 废话生成</a>
+        <a href="#bottomless">BOTTOMLESS PIT 无底洞</a>
     </div>
 
     <div class="layout">
         <div class="main-col" id="papers">
             <div class="section-title">
-                <h2 style="margin:0; font-size:1.2rem;">Current Issue / 最新文献</h2>
-                <button onclick="document.getElementById('submitModal').showModal()">投稿投稿 / Submit</button>
+                <h2>Current Issue / 最新文献</h2>
+                <button onclick="document.getElementById('submitModal').showModal()">立即投稿 / Submit</button>
             </div>
-            <div id="papers-container">📡 加载天坑文献中...</div>
+            <div id="papers-container">📡 正在同步坑底最新的废料文献...</div>
         </div>
 
         <div class="side-col">
             <div id="forum">
                 <div class="section-title">
-                    <h2 style="margin:0; font-size:1.2rem;">Pit Index (PI) / 天坑指数</h2>
-                    <button onclick="document.getElementById('addMajorModal').showModal()" style="font-size: 0.7rem; padding: 5px;">申报新坑位</button>
+                    <h2>Pit Index (PI) / 天坑指数</h2>
+                    <button onclick="document.getElementById('addMajorModal').showModal()" style="font-size: 0.8rem; padding: 5px 10px;">申报坑位</button>
                 </div>
-                <div id="pi-container">📡 同步怨种指数...</div>
+                <div id="pi-container">📡 正在计算各专业下坠深度...</div>
             </div>
 
-            <div id="ai" style="margin-top: 40px;">
+            <div id="ai" style="margin-top: 60px;">
                 <div class="section-title">
-                    <h2 style="margin:0; font-size:1.2rem;">Abstract Generator AI</h2>
+                    <h2>AI Abstract Generator</h2>
                 </div>
                 <div class="ai-box">
-                    <input type="text" id="bs-keyword" placeholder="输入关键词（如：打灰、提纯、周报）">
-                    <button onclick="generateAIBS()" style="width:100%;">生成高大上废话 (朋友圈装X用)</button>
-                    <div id="bs-output"></div>
-                    <button id="sync-ai-btn" onclick="syncAI()" style="width:100%; margin-top:10px; display:none; background:var(--accent-red);">同步至最新文章库</button>
+                    <input type="text" id="bs-keyword" placeholder="输入关键词（如：洗瓶子、打灰、画饼、调参）" style="width:100%">
+                    <button onclick="generateAIBS()" style="width:100%; font-size: 1.2rem; padding: 15px;">一键生成学术废话</button>
+                    <div id="bs-output">生成结果将在此显示，可直接用于论文摘要或朋友圈。</div>
+                    <button id="sync-ai-btn" onclick="syncAI()" style="width:100%; margin-top:20px; display:none; background:var(--accent-red); font-size:1.1rem;">确认：将此废话发表至文献库</button>
                 </div>
             </div>
         </div>
     </div>
 
     <div id="bottomless" class="footer-banner">
-        <h2 style="font-size: 2rem;">Bottomless Pit / 无底洞专区</h2>
-        <p>这里没有评审，没有拒绝，只有永恒的下坠。</p>
-        <button onclick="openBottomless()" style="font-size: 1.5rem; padding: 15px 50px;">纵身一跳</button>
+        <h2>Bottomless Pit</h2>
+        <p style="font-size: 1.4rem;">这里没有评审，没有拒稿，只有永恒的自由与下坠。</p>
+        <button onclick="openBottomless()" style="font-size: 1.8rem; padding: 20px 60px; margin-top: 20px;">纵身一跳</button>
     </div>
 
     <dialog id="submitModal">
-        <h3>向 PIT 投稿 (免审直发)</h3>
-        <input type="text" id="p-title" placeholder="论文标题">
-        <input type="text" id="p-author" placeholder="作者（或填：某校受害者）">
-        <textarea id="p-abstract" rows="2" placeholder="简短摘要"></textarea>
-        <textarea id="p-content" rows="6" placeholder="正文内容（支持发疯、文学创作、或粘贴导师语录）"></textarea>
-        <button onclick="submitPaper()" style="width:100%;">立即发表</button>
-        <button onclick="this.closest('dialog').close()" style="background:#888; margin-top:10px; width:100%;">关闭</button>
+        <h3>Submit to PIT</h3>
+        <input type="text" id="p-title" placeholder="研究标题 (例: 论洗瓶子对宇宙膨胀的影响)">
+        <input type="text" id="p-author" placeholder="署名 (例: 某实验室牛马 / 匿名受害者)">
+        <textarea id="p-abstract" rows="3" placeholder="简短摘要 (让读者快速感受你的绝望)"></textarea>
+        <textarea id="p-content" rows="6" placeholder="正文内容 (支持发泄、文学、或导师画饼录音转文字)"></textarea>
+        <button onclick="submitPaper()" style="width:100%; font-size: 1.3rem;">正式发表</button>
+        <button onclick="this.closest('dialog').close()" style="background:#888; margin-top:10px; width:100%;">暂时撤回</button>
     </dialog>
 
     <dialog id="addMajorModal">
         <h3>申报新天坑</h3>
-        <input type="text" id="m-name" placeholder="专业名称 (如：土木工程)">
-        <textarea id="m-desc" placeholder="一句话描述该坑的深度"></textarea>
-        <button onclick="addNewMajor()" style="width:100%;">确认申报</button>
-        <button onclick="this.closest('dialog').close()" style="background:#888; margin-top:10px; width:100%;">取消</button>
+        <input type="text" id="m-name" placeholder="专业全称 (例: 生物工程 / 土木建筑)">
+        <textarea id="m-desc" placeholder="简短描述这个坑到底有多深..."></textarea>
+        <button onclick="addNewMajor()" style="width:100%; font-size: 1.3rem;">确认申报</button>
+        <button onclick="this.closest('dialog').close()" style="background:#888; margin-top:10px; width:100%;">算了，这坑不值一提</button>
     </dialog>
 
     <script>
-        // Supabase 配置
+        // Supabase 初始化 (保持原有配置)
         const supabaseUrl = 'https://lbuhtjezlkirkxbfgwvt.supabase.co';
         const p1 = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.';
         const p2 = 'eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxidWh0amV6bGtpcmt4YmZnd3Z0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1Mzk0OTksImV4cCI6MjA4ODExNTQ5OX0.dBP_u7PXyy9D_mCYGYDkDzvOArDBcQ6Qf8FO0wdO5lg';
         const _supabase = supabase.createClient(supabaseUrl, p1 + p2);
 
-        // 初始化加载
         window.onload = () => { fetchPapers(); fetchPI(); };
 
-        // --- 1. 文章逻辑 ---
         async function fetchPapers() {
             const { data } = await _supabase.from('pit_papers').select('*').order('created_at', { ascending: false });
             const container = document.getElementById('papers-container');
             container.innerHTML = data?.map(p => `
                 <div class="paper-item">
-                    <span class="paper-title">📄 ${p.title}</span>
-                    <div style="font-size:0.8rem; color:#666; margin:5px 0;">Author: ${p.author}</div>
-                    <div style="font-size:0.9rem; background:#f9f9f9; padding:10px; border-left:3px solid #000;">${p.abstract}</div>
+                    <span class="paper-title">${p.title}</span>
+                    <div class="paper-meta">Received: ${new Date(p.created_at).toLocaleDateString()} | Author: ${p.author}</div>
+                    <div class="paper-abstract"><strong>Abstract:</strong> ${p.abstract}</div>
                 </div>
-            `).join('') || '暂无文献';
+            `).join('') || '暂无学术产出';
         }
 
-        async function submitPaper() {
-            const title = document.getElementById('p-title').value;
-            const author = document.getElementById('p-author').value || '匿名牛马';
-            const abstract = document.getElementById('p-abstract').value;
-            const content = document.getElementById('p-content').value;
-            await _supabase.from('pit_papers').insert([{ title, author, abstract, content }]);
-            location.reload();
-        }
-
-        // --- 2. 天坑指数 (PI) 逻辑 ---
         async function fetchPI() {
             const { data } = await _supabase.from('pit_forum').select('*').order('count', { ascending: true });
             const container = document.getElementById('pi-container');
@@ -167,58 +195,70 @@
                 return `
                 <div class="pi-card">
                     <div class="pi-header">
-                        <strong>${f.name}</strong>
+                        <span class="pi-major-name">${f.name}</span>
                         <span class="pi-score">${f.count}</span>
                     </div>
-                    <p style="font-size:0.8rem; color:#666; margin:0;">${f.description || '暂无描述'}</p>
+                    <div class="pi-desc">${f.description || '受害者尚未留言。'}</div>
                     <div class="vote-area">
-                        <input type="number" id="v_${f.id}" class="vote-input" placeholder="0到-250" min="-250" max="0">
-                        <button onclick="votePI('${f.id}', ${f.count})" ${hasVoted?'disabled':''} style="padding:5px 10px; font-size:0.7rem;">
-                            ${hasVoted?'已打分':'打分'}
+                        <input type="number" id="v_${f.id}" class="vote-input" placeholder="0~-250" min="-250" max="0">
+                        <button onclick="votePI('${f.id}', ${f.count})" ${hasVoted?'disabled':''}>
+                            ${hasVoted?'已砸砖':'砸砖评分'}
                         </button>
                     </div>
                 </div>`;
-            }).join('') || '点击申报新坑位';
+            }).join('') || '点击上方按钮申报新坑位';
+        }
+
+        // 提交逻辑
+        async function submitPaper() {
+            const title = document.getElementById('p-title').value;
+            const author = document.getElementById('p-author').value || '匿名受害者';
+            const abstract = document.getElementById('p-abstract').value;
+            const content = document.getElementById('p-content').value;
+            if(!title || !abstract) return alert("请至少填写标题和摘要。");
+            await _supabase.from('pit_papers').insert([{ title, author, abstract, content }]);
+            location.reload();
         }
 
         async function addNewMajor() {
             const name = document.getElementById('m-name').value;
             const description = document.getElementById('m-desc').value;
+            if(!name) return;
             await _supabase.from('pit_forum').insert([{ name, description, count: 0 }]);
             location.reload();
         }
 
         async function votePI(id, currentCount) {
             const val = parseInt(document.getElementById('v_'+id).value);
-            if(isNaN(val) || val < -250 || val > 0) return alert("请输入0到-250之间的分值");
+            if(isNaN(val) || val < -250 || val > 0) return alert("为了保持坑位深度，分值必须在 0 到 -250 之间。");
             await _supabase.from('pit_forum').update({ count: currentCount + val }).eq('id', id);
             localStorage.setItem('voted_' + id, 'true');
             fetchPI();
         }
 
-        // --- 3. AI 废话生成器 ---
+        // AI 逻辑
         const templates = [
-            "基于【关键词】的异构拓扑分析，本研究揭示了学术劳动在零产出闭环中的相变机制。通过引入‘天坑熵’模型，我们发现无论如何优化【关键词】，其毕业概率始终收敛于复平面上的虚数点。这为当代硕博生‘极致的摸鱼’提供了本体论依据。",
-            "本文旨在解构【关键词】在社会学叙事下的虚无属性。实验通过对5000名研究生的心率监测，证明了在提到【关键词】时，其多巴胺分泌水平低于洗瓶子时的背景噪音。该发现对于构建‘天坑专业’的抗压防御系统具有里程碑意义。"
+            "通过引入【关键词】的多维张量分析，本研究解构了学术生产力在零边际效益下的塌缩过程。我们发现，研究者的精神内耗与【关键词】的循环次数成指数级正相关，这一发现为构建‘全自动化摸鱼体系’奠定了本体论基础。",
+            "本文探讨了在极端【关键词】环境下，个体如何通过意识形态的虚无化实现自我救赎。实验证明，持续性的【关键词】操作会导致多巴胺受体的集体罢工，其产生的‘学术废料熵’足以维持整个实验室的空调运转。"
         ];
-        let lastAIResult = {};
+        let lastAI = {};
 
         function generateAIBS() {
-            const kw = document.getElementById('bs-keyword').value || "科研垃圾";
+            const kw = document.getElementById('bs-keyword').value || "天坑科研";
             const text = templates[Math.floor(Math.random()*templates.length)].replace(/【关键词】/g, kw);
             document.getElementById('bs-output').innerText = text;
             document.getElementById('sync-ai-btn').style.display = 'block';
-            lastAIResult = { title: `论“${kw}”的形而上学失效`, abstract: text };
+            lastAI = { title: `论“${kw}”在虚无时空中的学术映射`, abstract: text };
         }
 
         async function syncAI() {
-            await _supabase.from('pit_papers').insert([{ ...lastAIResult, author: 'AI-Generator', content: 'Auto-Sync' }]);
-            alert("已同步至文献库，去朋友圈装X吧！");
+            await _supabase.from('pit_papers').insert([{ ...lastAI, author: 'PIT-AI-Lab', content: 'Auto-Generated Work' }]);
+            alert("已成功发表！这篇废话现在是正式文献了。");
             fetchPapers();
         }
 
         function openBottomless() {
-            document.getElementById('p-title').value = "【无底洞消息】";
+            document.getElementById('p-title').value = "来自无底洞的呼喊";
             document.getElementById('submitModal').showModal();
         }
     </script>
