@@ -15,9 +15,9 @@
         /* 刊头 */
         .header-title { text-align: center; border-bottom: 4px solid #1c1c1c; padding-bottom: 20px; margin-bottom: 40px; }
         
-        /* 导航 */
+        /* 导航栏 */
         .nav { text-align: center; margin-bottom: 40px; font-size: 1.05rem; font-weight: bold; text-transform: uppercase; }
-        .nav a { margin: 0 15px; border-bottom: 1px solid #1c1c1c; padding-bottom: 2px; }
+        .nav a { margin: 0 12px; border-bottom: 1px solid #1c1c1c; padding-bottom: 2px; }
 
         /* 左右排版 */
         .layout-wrapper { display: flex; flex-wrap: wrap; gap: 40px; }
@@ -45,9 +45,9 @@
         .hot-comment { font-size: 0.85rem; color: #222; margin-bottom: 10px; background: #fff; padding: 8px; border: 1px solid #ccc;}
         .hot-comment-footer { text-align: right; margin-top: 5px; }
         
-        /* 废话生成器特有框 */
-        .jargon-box { border: 2px solid #1c1c1c; padding: 15px; background: #fff; text-align: center; }
-        .jargon-text { font-size: 0.95rem; color: #111; min-height: 70px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; border-bottom: 1px dashed #ccc; padding-bottom: 15px;}
+        /* 400字发疯生成器框 */
+        .jargon-box { border: 2px solid #1c1c1c; padding: 15px; background: #fff; text-align: left; }
+        .jargon-text { font-size: 0.9rem; color: #111; min-height: 150px; margin-bottom: 15px; border-bottom: 1px dashed #ccc; padding-bottom: 15px; line-height: 1.8; word-wrap: break-word; }
 
         /* 底部联系我们页脚 */
         .site-footer { margin-top: 60px; border-top: 4px solid #1c1c1c; padding-top: 30px; padding-bottom: 20px; text-align: center; clear: both;}
@@ -55,11 +55,15 @@
         /* 按钮与输入框 */
         button { padding: 6px 12px; background: #1c1c1c; color: #f4f4f2; border: 1px solid #1c1c1c; font-weight: bold; cursor: pointer; font-size: 0.85rem; font-family: inherit; }
         button:hover:not(:disabled) { background: #f4f4f2; color: #1c1c1c; box-shadow: 2px 2px 0px #1c1c1c; }
-        button:disabled { background: #888; border-color: #888; color: #fff; cursor: not-allowed; box-shadow: none; }
+        button:disabled { background: #ebebe8; border-color: #ccc; color: #888; cursor: not-allowed; box-shadow: none; }
         
         .like-btn { padding: 2px 6px; font-size: 0.75rem; background: transparent; color: #1c1c1c; border: 1px solid #ccc; font-weight: normal; }
         .like-btn:hover:not(:disabled) { background: #1c1c1c; color: #fff; box-shadow: none;}
-        .like-btn:disabled { background: #ebebe8; color: #999; border-color: #eee; }
+
+        .danger-btn { background: #8b0000; color: #fff; border-color: #8b0000; }
+        .danger-btn:hover:not(:disabled) { background: #fff; color: #8b0000; box-shadow: 2px 2px 0px #8b0000; }
+        .success-btn { background: #228b22; color: #fff; border-color: #228b22; width: 100%; margin-bottom: 15px;}
+        .success-btn:hover:not(:disabled) { background: #fff; color: #228b22; box-shadow: 2px 2px 0px #228b22; }
 
         input[type="text"], textarea { border: 1px solid #1c1c1c; background-color: #fff; padding: 8px; font-family: inherit; width: 100%; box-sizing: border-box; margin-bottom: 10px;}
 
@@ -68,6 +72,11 @@
         dialog::backdrop { background: rgba(0, 0, 0, 0.7); }
         .close-btn { background: transparent; color: #1c1c1c; border: none; float: right; font-size: 1.5rem; margin-top: -20px; margin-right: -20px; line-height: 1;}
         .close-btn:hover { color: red; box-shadow: none; background: transparent;}
+
+        /* 管理员后台列表样式 */
+        .admin-list-item { border: 1px solid #ccc; background: #fff; padding: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .admin-list-content { max-width: 70%; font-size: 0.9rem; }
+        .admin-actions { display: flex; gap: 5px; }
     </style>
 </head>
 <body>
@@ -80,6 +89,7 @@
     <div class="nav">
         <a href="#papers">Latest Issue / 最新文献</a>
         <a href="#forum">Pit Index / 天坑指数</a>
+        <a href="#generator">400 Words BS / 发疯文学生成</a>
         <a href="#footer">Contact / 联系我们</a>
     </div>
 
@@ -100,12 +110,14 @@
             <div id="loading-msg" style="color:#666;">📡 正在同步全球实验室牛马数据...</div>
             <div id="forum-container"></div>
 
-            <div class="section-title" style="margin-top: 40px;">
-                <h2 style="margin:0; font-size: 1.2rem;">BS Generator / 学术废话生成器</h2>
+            <div class="section-title" id="generator" style="margin-top: 40px;">
+                <h2 style="margin:0; font-size: 1.2rem;">Madness Generator / 发疯文学生成器</h2>
             </div>
             <div class="jargon-box">
-                <div class="jargon-text" id="jargon-display">点击下方按钮，生成一句高大上的学术废话，填补你的字数与灵魂。</div>
-                <button onclick="generateJargon()" style="width: 100%;">Generate / 生成废话</button>
+                <div class="jargon-text" id="jargon-display">
+                    【系统提示】点击下方按钮，系统将为你随机生成一篇长达400字的天坑专业发疯文学，助你水字数、宣泄情绪、填补灵魂空白。
+                </div>
+                <button onclick="generateLongMadness()" style="width: 100%;">Generate / 随机发疯生成 (400字)</button>
             </div>
         </div>
     </div>
@@ -114,12 +126,13 @@
         <h3 style="margin-bottom: 10px; font-size: 1.1rem; text-transform: uppercase;">Contact Us / 联系我们</h3>
         <p style="font-size: 0.9rem; color: #444; margin: 5px 0;">如果你在天坑专业受苦受难，或者想合作发表“废话”水刊，请联系我们：</p>
         <p style="font-size: 1rem; font-weight: bold; margin: 10px 0;">Email: <a href="mailto:pit.journal@inutile.edu" style="text-decoration: underline;">pit.journal@inutile.edu</a></p>
-        <p style="font-size: 0.8rem; color: #666; margin-top: 20px;">© 2026 PIT Journal. All Rights Reserved. (本页面最终解释权归小叶所有，不接受反驳)</p>
+        <p style="font-size: 0.8rem; color: #666; margin-top: 20px; cursor: pointer;" onclick="openAdmin()">© 2026 PIT Journal. All Rights Reserved. (本页面最终解释权归小叶所有，不接受反驳)</p>
     </footer>
 
     <dialog id="submitModal">
         <button class="close-btn" onclick="document.getElementById('submitModal').close()">✖</button>
         <h3 style="margin-top:0;">Submit to PIT</h3>
+        <p style="font-size:0.85rem; color:#8b0000;">注：提交后需等待主编(小叶)审核通过后方可显示。</p>
         <input type="text" id="p-title" placeholder="研究标题">
         <input type="text" id="p-author" placeholder="署名 (默认: 匿名)">
         <textarea id="p-abstract" rows="2" placeholder="简短摘要"></textarea>
@@ -131,6 +144,19 @@
         <button class="close-btn" onclick="document.getElementById('fullTextModal').close()">✖</button>
         <h3 id="ft-title" style="margin-top:0; border-bottom: 2px solid #1c1c1c; padding-bottom: 10px;"></h3>
         <div id="ft-content" style="white-space: pre-wrap; font-size: 0.95rem; line-height: 1.8;"></div>
+    </dialog>
+
+    <dialog id="adminModal">
+        <button class="close-btn" onclick="document.getElementById('adminModal').close()">✖</button>
+        <h3 style="margin-top:0; border-bottom: 2px solid #1c1c1c; padding-bottom: 10px;">主编控制台 (Admin Dashboard)</h3>
+        
+        <button class="success-btn" onclick="injectSamples()" id="btn-inject">✨ 一键导入 10 篇天坑示例大作 ✨</button>
+
+        <h4 style="margin-bottom: 10px;">待审核文献 (点击"通过"发布，"删除"直接销毁)</h4>
+        <div id="admin-papers-container" style="max-height: 200px; overflow-y: auto; margin-bottom: 20px;"></div>
+
+        <h4 style="margin-bottom: 10px;">近期天坑评论 (点击"删除"销毁不当言论)</h4>
+        <div id="admin-comments-container" style="max-height: 200px; overflow-y: auto;"></div>
     </dialog>
 
     <script>
@@ -148,20 +174,26 @@
             const end = start + pageSize - 1;
             const { data, count } = await _supabase.from('pit_papers')
                 .select('*', { count: 'exact' })
+                .eq('status', 'approved')
                 .order('created_at', { ascending: false })
                 .range(start, end);
             
-            document.getElementById('papers-container').innerHTML = data?.map(p => `
+            document.getElementById('papers-container').innerHTML = data?.map(p => {
+                // 检查这台电脑是否已经点过赞
+                const hasLiked = localStorage.getItem('pit_liked_paper_' + p.id);
+                return `
                 <div class="paper-item">
                     <span class="paper-title" onclick="openFT('${encodeURIComponent(JSON.stringify(p))}')">${p.title}</span>
                     <div class="paper-meta">Author: ${p.author} | ${new Date(p.created_at).toLocaleDateString()}</div>
                     <div class="paper-abstract">${p.abstract}</div>
                     <div class="paper-footer">
                         <span style="color:#b22222; cursor:pointer; font-weight:bold; text-decoration:underline;" onclick="openFT('${encodeURIComponent(JSON.stringify(p))}')">阅读全文 &raquo;</span>
-                        <button class="like-btn" style="padding:4px 10px;" onclick="likePaper('${p.id}', ${p.likes||0})">👍 共鸣 ${p.likes||0}</button>
+                        <button class="like-btn" style="padding:4px 10px;" onclick="likePaper(event, '${p.id}', ${p.likes||0})" ${hasLiked ? 'disabled' : ''}>
+                            👍 共鸣 ${p.likes||0} ${hasLiked ? '(已鸣)' : ''}
+                        </button>
                     </div>
-                </div>
-            `).join('') || '暂无文献';
+                </div>`;
+            }).join('') || '暂无已审核的文献';
             
             const totalPages = Math.ceil(count / pageSize);
             document.getElementById('page-ctrl').innerHTML = `
@@ -180,9 +212,14 @@
             document.getElementById('fullTextModal').showModal();
         }
 
-        async function likePaper(id, cur) {
+        // 点赞逻辑：每人限点一次
+        async function likePaper(event, id, cur) {
+            event.stopPropagation(); // 阻止冒泡
+            event.target.innerText = `👍 共鸣 ${cur + 1} (已鸣)`;
+            event.target.disabled = true; // 马上变灰不可点
+            localStorage.setItem('pit_liked_paper_' + id, 'true'); // 记录在本地
+
             await _supabase.from('pit_papers').update({ likes: cur + 1 }).eq('id', id);
-            fetchPapers();
         }
 
         async function submitPaper() {
@@ -195,7 +232,7 @@
             const btn = document.getElementById('btn-submit');
             btn.innerText = "提交中..."; btn.disabled = true;
 
-            await _supabase.from('pit_papers').insert([{ title, author, abstract, content, likes: 0 }]);
+            await _supabase.from('pit_papers').insert([{ title, author, abstract, content, likes: 0, status: 'pending' }]);
             
             btn.innerText = "发表文献"; btn.disabled = false;
             document.getElementById('submitModal').close();
@@ -204,7 +241,7 @@
             document.getElementById('p-author').value = '';
             document.getElementById('p-abstract').value = '';
             document.getElementById('p-content').value = '';
-            curPage = 1;
+            alert("提交成功！请等待主编(小叶)后台审核后显示。");
             fetchPapers();
         }
 
@@ -215,7 +252,7 @@
         async function fetchAllForumData() {
             const [forumRes, commentsRes] = await Promise.all([
                 _supabase.from('pit_forum').select('*').order('count', { ascending: false }),
-                _supabase.from('pit_comments').select('*').order('likes', { ascending: false })
+                _supabase.from('pit_comments').select('*').order('created_at', { ascending: false })
             ]);
             
             if (!forumRes.error && !commentsRes.error) {
@@ -234,7 +271,10 @@
                 const progressPercent = Math.min((item.count / 250) * 100, 100);
                 const hasCommented = localStorage.getItem(`pit_commented_${item.id}`);
                 
-                const topComments = globalCommentsData.filter(c => c.major_id === item.id).slice(0, 3);
+                const topComments = globalCommentsData
+                    .filter(c => c.major_id === item.id)
+                    .sort((a, b) => b.likes - a.likes)
+                    .slice(0, 3);
                 
                 let commentsHTML = '<div style="margin-bottom: 10px; font-size: 0.9rem;"><strong>🔥 Top 3 天坑语录:</strong></div>';
                 if (topComments.length > 0) {
@@ -264,9 +304,9 @@
                         <div class="comment-section" id="comment_${item.id}" onclick="event.stopPropagation()">
                             ${commentsHTML}
                             <div style="margin-top: 15px; border-top: 1px dashed #999; padding-top: 10px;">
-                                <textarea id="input_${item.id}" rows="2" placeholder="${hasCommented ? '你已入坑，无法再次入坑。' : '写下你的入坑指南，坑深+1...'}"></textarea>
+                                <textarea id="input_${item.id}" rows="2" placeholder="${hasCommented ? '你已入坑，无法再次入坑。' : '写下你的入坑指南，记录你跌落谷底的瞬间...'}"></textarea>
                                 <button id="btn_${item.id}" onclick="submitForum('${item.id}', ${item.count})" style="margin-top:5px; width: 100%;" ${hasCommented ? 'disabled' : ''}>
-                                    ${hasCommented ? '🕳 已入坑' : '坑的高度-1'}
+                                    ${hasCommented ? '🕳 已入坑' : '入坑'}
                                 </button>
                             </div>
                         </div>
@@ -302,23 +342,130 @@
             await _supabase.from('pit_forum').update({ count: newCount }).eq('id', id);
             
             localStorage.setItem(`pit_commented_${id}`, 'true');
-            alert("入坑申请已提交！坑深度+1。");
+            alert("入坑申请已提交！");
             
             document.getElementById(`input_${id}`).value = '';
             fetchAllForumData();
         }
 
-        /* ================= 3. 新增：学术废话生成器逻辑 ================= */
-        function generateJargon() {
-            const part1 = ["基于多模态融合的", "面向复杂场景的", "一种新型的", "基于深度图网络的", "具有自适应特征的", "针对异构数据的", "依托底层逻辑的", "解构传统范式的"];
-            const part2 = ["协同演化机制", "动态耦合框架", "非线性交互模型", "隐式表征策略", "多维度评估范式", "鲁棒性增强算法", "闭环赋能矩阵", "下沉式生命周期"];
-            const part3 = ["，显著提升了系统的边缘泛化能力。", "，为解决该领域痛点提供了新的理论支撑。", "，有效打破了传统方法的性能瓶颈。", "，实现了端到端的高效范式转移。", "，在理论层面上具有一定的前瞻性。", "，打通了全链路的生态闭环。"];
+        /* ================= 3. 400字发疯文学生成器逻辑 ================= */
+        function generateLongMadness() {
+            const openings = [
+                "作为一个在天坑里摸爬滚打多年的科研搬砖工，我现在的情绪非常稳定。",
+                "夜深了，培养箱里的细胞又死了一批，通风橱的轰鸣声像极了我心碎的声音。",
+                "导师今天又在群里画饼了，说这个方向大有可为，我看着满桌子的废液槽陷入了沉思。",
+                "你问我为什么要读这个专业？大概是因为我上辈子犯了天条，这辈子来实验室赎罪的吧。",
+                "每当组会前夕，我的大脑就开始自动重组那些基于多模态融合的底层逻辑范式。"
+            ];
+            const bodies = [
+                "你知道吗？所谓的数据清洗，就是把我流过的眼泪从Excel表格里擦掉。在无数个日夜交替中，我试图解构这套复杂场景下的非线性交互模型，却发现自己只是在这场盛大的学术游戏中扮演了一个毫无卵用的NPC。底层机制？没有底层机制。协同演化？那只是我的头发和导师的期望在协同消失。我们不断地去寻找那些具有自适应特征的隐式表征策略，把异构数据塞进一个连自己都看不懂的框架里。",
+                "从前期的文献调研到后期的实验受挫，这是一场完美的端到端范式转移。我每天都在通过调整那几个不知所谓的参数，试图打破传统方法的性能瓶颈。实际上，瓶颈就是我自己。当鲁棒性增强算法也无法拯救我惨不忍睹的阳性结果时，我决定放下执念。既然无法在这个多维度评估矩阵中找到突破口，不如就顺应自然，承认一切都是命运的安排。",
+                "仔细想想，我们的生命周期早就被下沉到了实验室的最深处。所有的科研痛点，最终都会转化为生理上的痛点——比如我的颈椎和腰椎。我不停地做着那些高度重复的无效劳动，试图从中提取出一丝属于人类智慧的火花，但往往得到的只是一堆乱码。在这条布满荆棘的路上，同行评审就是悬在头顶的达摩克利斯之剑，每一次大修都是对我灵魂深处的一次灵魂拷问。"
+            ];
+            const endings = [
+                "所以，不要问我文章投了哪里，问就是还在修改，还在打磨。毕竟，科研的尽头不仅是玄学，更是我为了水够字数而发出的最后一声长叹。天坑不空，誓不毕业，阿门。",
+                "总而言之，只要我把这些毫无关联的变量强行塞入一个名叫‘创新’的黑盒中，再用一堆别人看不懂的术语进行包装，我就能在天坑里继续苟延残喘。这就是我的生存之道。",
+                "综上所述，虽然我的研究没有解决任何实际问题，也没有改变任何现实，但它至少成功浪费了国家的经费和我宝贵的青春。在这个充满不确定性的学术界里，这也算是一种另类的稳定吧。"
+            ];
+            const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+            const paragraph = pick(openings) + " " + pick(bodies) + " 别人说科研需要严谨，但在我这里只需要抗压。每天看着同龄人升职加薪，我却还在因为买不起一瓶抗体而发愁。其实这些都不是最重要的，重要的是，我似乎已经习惯了这种被数据反复折磨的快感。" + pick(endings);
+            document.getElementById('jargon-display').innerText = paragraph;
+        }
+
+        /* ================= 4. 管理员控制台逻辑 ================= */
+        // 教你怎么进后台：划到网页最下面，点击那行小字“© 2026 PIT Journal...”，输入xiaoye666
+        async function openAdmin() {
+            const pwd = prompt("请输入主编密码进入控制台：");
+            if (pwd !== "xiaoye666") { 
+                if (pwd !== null) alert("密码错误，你不是小叶！");
+                return;
+            }
+            document.getElementById('adminModal').showModal();
+            loadAdminData();
+        }
+
+        async function loadAdminData() {
+            const papersContainer = document.getElementById('admin-papers-container');
+            const commentsContainer = document.getElementById('admin-comments-container');
             
-            const p1 = part1[Math.floor(Math.random() * part1.length)];
-            const p2 = part2[Math.floor(Math.random() * part2.length)];
-            const p3 = part3[Math.floor(Math.random() * part3.length)];
+            papersContainer.innerHTML = '加载中...';
+            commentsContainer.innerHTML = '加载中...';
+
+            const { data: pendingPapers } = await _supabase.from('pit_papers').select('*').eq('status', 'pending');
             
-            document.getElementById('jargon-display').innerText = p1 + p2 + p3;
+            if (pendingPapers && pendingPapers.length > 0) {
+                papersContainer.innerHTML = pendingPapers.map(p => `
+                    <div class="admin-list-item">
+                        <div class="admin-list-content"><strong>${p.title}</strong><br>作者: ${p.author}</div>
+                        <div class="admin-actions">
+                            <button onclick="approvePaper('${p.id}')">通过</button>
+                            <button class="danger-btn" onclick="deletePaper('${p.id}')">删除</button>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                papersContainer.innerHTML = '<div style="color:#666; font-size:0.9rem;">暂无待审核文献。</div>';
+            }
+
+            if (globalCommentsData && globalCommentsData.length > 0) {
+                commentsContainer.innerHTML = globalCommentsData.map(c => `
+                    <div class="admin-list-item">
+                        <div class="admin-list-content">"${c.content}"</div>
+                        <div class="admin-actions">
+                            <button class="danger-btn" onclick="deleteComment('${c.id}')">删除</button>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                commentsContainer.innerHTML = '<div style="color:#666; font-size:0.9rem;">暂无评论数据。</div>';
+            }
+        }
+
+        async function approvePaper(id) {
+            if(!confirm("确定通过这篇文献吗？")) return;
+            await _supabase.from('pit_papers').update({ status: 'approved' }).eq('id', id);
+            loadAdminData(); 
+            fetchPapers();   
+        }
+
+        async function deletePaper(id) {
+            if(!confirm("确定直接删除这篇文献吗？无法恢复！")) return;
+            await _supabase.from('pit_papers').delete().eq('id', id);
+            loadAdminData();
+        }
+
+        async function deleteComment(id) {
+            if(!confirm("确定删除这条天坑语录吗？")) return;
+            await _supabase.from('pit_comments').delete().eq('id', id);
+            loadAdminData();
+            fetchAllForumData(); 
+        }
+
+        /* ================= 5. 一键生成10篇示例大作 ================= */
+        async function injectSamples() {
+            if(!confirm("确定要一键导入 10 篇搞怪文献示例吗？这会直接显示在主页哦！")) return;
+            
+            const btn = document.getElementById('btn-inject');
+            btn.innerText = "疯狂导入中..."; btn.disabled = true;
+
+            const samples = [
+                { title: "基于多喝热水的导师话术演化机制研究", author: "匿名牛马", abstract: "本文深入探究了导师在面临科研瓶颈时，如何通过高频词汇'多喝热水'实现对学生精神层面的降维打击。", content: "正文：水是一切生命的源泉，也是导师画大饼时的润滑剂。", likes: 99, status: "approved" },
+                { title: "论画饼充饥在研究生心理干预中的实证分析", author: "实验室早C晚A", abstract: "研究表明，一张饼的半径与学生的存活率呈显著的正相关，但过大的饼易导致消化不良与延毕综合征。", content: "正文：饼很大，但我咽不下去。", likes: 88, status: "approved" },
+                { title: "试剂耗材神秘失踪现象的量子力学解释", author: "寻物启事区区长", abstract: "基于薛定谔的猫理论，本研究发现实验室的枪头和手套处于'存在'与'不存在'的叠加态，只有在你急需使用时才会彻底坍缩为'不存在'。", content: "正文：别找了，隔壁师兄拿走了。", likes: 102, status: "approved" },
+                { title: "延毕综合征的早期预防与晚期放弃治疗", author: "头发去哪了", abstract: "在多次盲审被毙后，本作者提出了一种全新的治疗范式：只要我不毕业，我就永远是个宝宝。", content: "正文：只要心态好，延毕当长假。", likes: 76, status: "approved" },
+                { title: "组会PPT排版艺术与学术造诣的负相关性研究", author: "复制粘贴大师", abstract: "数据表明，组会PPT越花里胡哨、动画越多，通常意味着其实验数据越是惨不忍睹，这被称为'学术伪装效应'。", content: "正文：PPT做得好，老板也哄得好。", likes: 150, status: "approved" },
+                { title: "深夜12点后培养箱温度波动的玄学探讨", author: "守夜人", abstract: "本文记录了连续30个无眠之夜对细胞培养箱的观察，得出了结论：温度的波动并不取决于电力系统，而是取决于操作者的非酋体质。", content: "正文：太累了，毁灭吧。", likes: 45, status: "approved" },
+                { title: "论“这周五前给我”对心血管系统的破坏性影响", author: "猝死边缘试探", abstract: "通过对200名在读博士的血压监测，证实了导师这一口头禅是诱发急性心梗的核心变量。", content: "正文：周五到了，但我人没了。", likes: 210, status: "approved" },
+                { title: "跑胶失败后的自我心理暗示与PUA机制", author: "WB不出带", abstract: "本文首次提出了'只要胶跑得足够慢，悲伤就追不上我'的阿Q式自我疗愈法则。", content: "正文：条带呢？条带去哪了？", likes: 32, status: "approved" },
+                { title: "导师微信回复“？”时的语义消歧与情感计算", author: "揣摩圣意砖家", abstract: "一个问号，包含了震惊、愤怒、失望与不解。本文利用大语言模型对这一单字符进行了百万级语料库的深度解析。", content: "正文：此时无声胜有声，赶紧去干活。", likes: 89, status: "approved" },
+                { title: "既然天坑已定：论如何在实验室里优雅地打地铺", author: "睡袋拥有者", abstract: "打破传统住宿范式，提出了一套行之有效的实验室微空间重构策略，旨在提升睡袋的保暖性与抗噪音能力。", content: "正文：只要离离心机足够远，哪里都是家。", likes: 500, status: "approved" }
+            ];
+
+            await _supabase.from('pit_papers').insert(samples);
+            
+            btn.innerText = "✨ 一键导入 10 篇天坑示例大作 ✨"; btn.disabled = false;
+            alert("10篇搞怪示例已经导入成功！快关掉弹窗去主页看看吧！");
+            fetchPapers(); // 刷新主页文献
         }
 
         window.onload = () => {
