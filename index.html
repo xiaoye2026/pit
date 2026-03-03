@@ -1,19 +1,247 @@
--- 1. 创建天坑数据表
-CREATE TABLE pit_forum (
-  id TEXT PRIMARY KEY,
-  name TEXT,
-  count INTEGER,
-  latest_comment TEXT
-);
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIT: Journal of Professional Inutile Training</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        /* 构石 (The Stone) 专属视觉系统 */
+        body { font-family: "Times New Roman", STSong, "SimSun", serif; background-color: #f4f4f2; color: #1c1c1c; max-width: 1000px; margin: 0 auto; padding: 50px 20px; line-height: 1.7; }
+        h1, h2, h3, h4 { font-weight: 700; letter-spacing: 0.5px; color: #111; }
+        .header-title { text-align: center; border-bottom: 4px solid #1c1c1c; padding-bottom: 20px; margin-bottom: 40px; }
+        a { color: #1c1c1c; text-decoration: none; transition: all 0.2s ease; }
+        a:hover { background-color: #e3e3e0; }
+        .nav { text-align: center; margin-bottom: 60px; font-size: 1.05rem; font-weight: bold; text-transform: uppercase; }
+        .nav a { margin: 0 15px; border-bottom: 1px solid #1c1c1c; padding-bottom: 2px; }
+        
+        .hero { text-align: center; margin: 60px 0; padding: 60px 20px; border: 4px solid #1c1c1c; background-color: #ebebe8; box-shadow: 8px 8px 0px #1c1c1c; }
+        .hero h2 { font-size: 2.8rem; margin: 0; line-height: 1.2; text-transform: uppercase; }
+        .hero p { font-size: 1.4rem; color: #111; margin-top: 20px; font-weight: bold; font-style: italic; }
 
--- 2. 注入初始气氛组数据 (让网页一开始不至于空荡荡)
-INSERT INTO pit_forum (id, name, count, latest_comment) VALUES
-  ('bio', '生物 (Biology)', 178, '只要我不毕业，导师就别想退休。'),
-  ('chem', '化学 (Chemistry)', 204, '吸了一口氯气，感觉灵魂得到了升华。'),
-  ('mat', '材料 (Materials)', 221, '烧炉子烧到半夜，以为看到了太上老君。'),
-  ('agr', '农业 (Agriculture)', 120, '种的麦子被隔壁组的羊给吃了。');
+        .layout-wrapper { display: flex; flex-wrap: wrap; gap: 40px; margin-top: 50px; }
+        .main-col { flex: 2; min-width: 300px; }
+        .side-col { flex: 1; min-width: 320px; border-left: 2px solid #1c1c1c; padding-left: 30px; }
+        @media (max-width: 768px) { .side-col { border-left: none; border-top: 4px solid #1c1c1c; padding-left: 0; padding-top: 40px; } }
 
--- 3. 开放全网读写权限（核心！这让大家不用登录也能发疯）
-ALTER TABLE pit_forum ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Allow public read" ON pit_forum FOR SELECT USING (true);
-CREATE POLICY "Allow public update" ON pit_forum FOR UPDATE USING (true);
+        .section-title { border-top: 2px solid #1c1c1c; border-bottom: 2px solid #1c1c1c; padding: 10px 0; margin-bottom: 30px; text-transform: uppercase; }
+        .paper-item { margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid #ccc; }
+        .paper-title { font-size: 1.3rem; margin-bottom: 8px; }
+        .paper-author { font-style: italic; font-size: 0.95rem; margin-top: 0; color: #555; }
+        .abstract { font-size: 0.95rem; margin-top: 15px; padding: 15px; background-color: #ebebe8; border-left: 4px solid #1c1c1c; }
+
+        .interactive-box { margin: 40px 0; padding: 20px; border: 2px solid #1c1c1c; background-color: #fafafa; box-shadow: 4px 4px 0px rgba(0,0,0,0.1); }
+        button { padding: 8px 15px; background: #1c1c1c; color: #f4f4f2; border: 1px solid #1c1c1c; font-weight: bold; cursor: pointer; font-size: 0.85rem; font-family: inherit; text-transform: uppercase;}
+        button:hover { background: #f4f4f2; color: #1c1c1c; box-shadow: 2px 2px 0px #1c1c1c; }
+        button:disabled { background: #666; cursor: not-allowed; box-shadow: none; border-color: #666;}
+        input[type="text"], textarea { border: 1px solid #1c1c1c; background-color: #fff; padding: 8px; font-family: inherit; width: 100%; box-sizing: border-box;}
+
+        .forum-module { border: 2px solid #1c1c1c; background-color: #ebebe8; padding: 15px; margin-bottom: 20px; cursor: pointer; position: relative; transition: background 0.2s; }
+        .forum-module:hover { background-color: #e0e0dd; }
+        .progress-container { width: 100%; height: 20px; border: 2px solid #1c1c1c; background: #fff; margin-top: 10px; position: relative; overflow: hidden; }
+        .progress-bar { height: 100%; background: #1c1c1c; transition: width 0.5s ease; }
+        .comment-section { display: none; margin-top: 15px; border-top: 1px dashed #1c1c1c; padding-top: 15px; }
+        .comment-list { font-size: 0.9rem; color: #444; margin-bottom: 10px; font-style: italic; background: #fff; padding: 10px; border: 1px solid #ccc; }
+        
+        #loading-msg { font-style: italic; color: #666; font-weight: bold; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+    <div class="header-title">
+        <h1 style="font-size: 2.8rem; margin-bottom: 5px;">PIT: Journal of Professional Inutile Training</h1>
+        <p style="margin-top: 0; font-size: 1.2rem; font-weight: bold;">PIT: 天坑专业收容所</p>
+        <p style="font-size: 0.85rem; color: #444; text-transform: uppercase; letter-spacing: 1px;">ISSN 0000-0250 | Est. 2026 | The Stone Zone</p>
+    </div>
+
+    <div class="nav">
+        <a href="#home">Home / 流程主页</a>
+        <a href="#current-issue">Current Issue / 最新文章</a>
+        <a href="#pit-index">Pit Index (PI) / 天坑论坛 (Live)</a>
+        <a href="#bottomless-pit">Bottomless Pit / 无底洞专区</a>
+    </div>
+
+    <div id="home" class="hero">
+        <h2>Focusing on Research That Changes Absolutely Nothing.</h2>
+        <p>既然深陷坑底，不如挖得更有创意——极致的无用之美。</p>
+    </div>
+
+    <div class="layout-wrapper">
+        <div class="main-col">
+            <h2 id="current-issue" class="section-title" style="margin-top: 0;">Current Issue / 最新文章</h2>
+            
+            <div class="paper-item">
+                <h3 class="paper-title">
+                    Investigation on "Air-Painted Pie" Visualization in Bio-Chem-Env-Mat Context<br>
+                    <span style="font-weight: normal; color: #555;">(基于生化环材多学科交叉背景下“空气画饼”的可视化表征研究)</span>
+                </h3>
+                <p class="paper-author">Author: Ghost of Lab / 实验室幽灵 (2026)</p>
+                <div class="abstract">
+                    <strong>Abstract:</strong> This paper systematically investigates the propagation characteristics of acoustic waves generated by advisors during group meetings...<br>
+                    <strong>摘要：</strong> 本文系统研究了导师在组会上产生的“画饼”声波在真空环境下的传播特性。通过计算流体力学模拟发现，其诱导的心理期望值与实际经费拨付率成反比 ($E \propto 1/F$)。
+                </div>
+            </div>
+
+            <div class="paper-item">
+                <h3 class="paper-title">
+                    A Prayer Algorithm for Automatic Cleaning of Stubborn Sediments in 500mL Flasks<br>
+                    <span style="font-weight: normal; color: #555;">(一种用于自动清洗实验室 500mL 烧瓶底部顽固沉淀的祈祷算法)</span>
+                </h3>
+                <p class="paper-author">Author: Sleepless Washer / 熬夜洗瓶工 (2026)</p>
+                <div class="abstract">
+                    <strong>Abstract:</strong> Addressing the non-Newtonian fluid wall-hanging problem in chemical synthesis, this study develops a prayer model based on quantum probability.<br>
+                    <strong>摘要：</strong> 针对化学合成中产生的非牛顿流体挂壁问题，本文放弃了物理刷洗，转而开发了一套基于量子概率的祈祷模型。在闭眼默念3遍“出数据”后，沉淀物脱落概率提升了0.0001%。
+                </div>
+            </div>
+
+            <h2 id="bottomless-pit" class="section-title">Bottomless Pit / 无底洞专区</h2>
+            <div class="interactive-box">
+                <h3 style="margin-top: 0;">Abstract Generator / AI 废话生成器</h3>
+                <input type="text" id="bs-keyword" placeholder="Enter keyword (e.g., 画饼)" style="width: 50%; display:inline-block; margin-right: 10px;">
+                <button onclick="generateBS()">Generate / 生成废话</button>
+                <div id="bs-output" style="margin-top: 20px; padding: 15px; border: 1px solid #ccc; background: #fff; min-height: 80px; font-style: italic;"></div>
+            </div>
+        </div>
+
+        <div class="side-col">
+            <h2 id="pit-index" class="section-title" style="margin-top: 0;">Pit Index / 天坑论坛</h2>
+            <p style="font-size: 0.9rem; color: #444; line-height: 1.5; margin-bottom: 10px;">
+                <strong>Global Descent Progress: 0 to -250.</strong><br>
+                【全网实时同步】每增加一条吐槽，该专业坑深 -1 。满级 -250 点代表绝对天坑。
+            </p>
+            
+            <div id="loading-msg">📡 正在连接全球怨种数据库...</div>
+
+            <div id="forum-container"></div>
+
+            <div style="border: 2px dashed #1c1c1c; padding: 15px; margin-top: 30px;">
+                <h4 style="margin-top: 0; margin-bottom: 10px;">Propose a New Pit / 申报新专业</h4>
+                <input type="text" id="new-major-input" placeholder="e.g., 土木工程" style="margin-bottom: 10px;">
+                <button onclick="proposeMajor()" style="width: 100%;">Submit / 提交审批</button>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 80px; font-size: 0.8rem; color: #666; border-top: 2px solid #1c1c1c; padding-top: 20px;">
+        <p>Copyright © 2026 PIT. Public Domain - 毕竟没人会偷这些垃圾想法。</p>
+    </div>
+
+    <script>
+        // --- 废话生成器 ---
+        const templates = [
+            { en: "Based on the multi-modal cross-contextual reconstruction of [X], this study demonstrates the inevitability of entropy increase.", zh: "基于多模态交叉语境下的【[X]】重构，本研究证实了其在封闭系统中的熵增必然性。" },
+            { en: "By analyzing the quantum entanglement state during [X], we reduced the experimental yield to absolute zero.", zh: "通过深入分析【[X]】过程中的量子纠缠态，我们将实验产率精准控制在绝对零度。" }
+        ];
+        function generateBS() {
+            const kw = document.getElementById('bs-keyword').value || "天坑";
+            const rt = templates[Math.floor(Math.random() * templates.length)];
+            document.getElementById('bs-output').innerHTML = `<strong style="color:#000;">EN:</strong> ${rt.en.replace(/\[X\]/g, kw)}<br><br><strong style="color:#000;">中文:</strong> ${rt.zh.replace(/\[X\]/g, kw)}`;
+        }
+
+        // --- 👇 核心！Supabase 联机逻辑 👇 ---
+        const supabaseUrl = 'https://lbuhtjezlkirkxbfgwvt.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxidWh0amV6bGtpcmt4YmZnd3Z0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1Mzk0OTksImV4cCI6MjA4ODExNTQ5OX0.dBP_u7PXyy9D_mCYGYDkDzvOArDBcQ6Qf8FO0wdO5lg';
+        const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        let globalForumData = [];
+
+        // 1. 从云端拉取数据
+        async function fetchForumData() {
+            document.getElementById('loading-msg').innerText = "📡 正在同步全球数据...";
+            const { data, error } = await _supabase.from('pit_forum').select('*').order('count', { ascending: false });
+            
+            if (error) {
+                console.error('获取数据失败', error);
+                document.getElementById('loading-msg').innerHTML = "<span style='color:red;'>⚠️ 数据库连接失败。请确认是否已在 Supabase 执行了建表 SQL 代码！</span>";
+                return;
+            }
+            
+            globalForumData = data;
+            document.getElementById('loading-msg').style.display = 'none';
+            renderForum();
+        }
+
+        // 2. 渲染论坛卡片
+        function renderForum() {
+            const container = document.getElementById('forum-container');
+            container.innerHTML = '';
+
+            globalForumData.forEach(item => {
+                const progressPercent = Math.min((item.count / 250) * 100, 100);
+                // 检查本地是否已经评论过
+                const hasCommentedLocally = localStorage.getItem(`pit_commented_${item.id}`);
+                
+                container.innerHTML += `
+                    <div class="forum-module" onclick="toggleComment('${item.id}')" id="module_${item.id}">
+                        <div style="font-weight: bold; font-size: 1.1rem;">${item.name}</div>
+                        <div style="font-size: 0.9rem; margin-top: 5px;">全网总分数: <strong style="color: #8b0000;">-${item.count}</strong> / -250</div>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: ${progressPercent}%;"></div>
+                        </div>
+
+                        <div class="comment-section" id="comment_${item.id}" onclick="event.stopPropagation()">
+                            <div class="comment-list">
+                                <strong style="color:#000;">最新全网吐槽:</strong><br>
+                                "${item.latest_comment || '暂无吐槽，深渊静默。'}"
+                            </div>
+                            <textarea id="input_${item.id}" rows="2" placeholder="${hasCommentedLocally ? '你已坠入天坑。' : '写下你的吐槽，坑深 +1...'}"></textarea>
+                            <button id="btn_${item.id}" onclick="submitComment('${item.id}', ${item.count})" style="margin-top: 10px;" ${hasCommentedLocally ? 'disabled' : ''}>
+                                ${hasCommentedLocally ? ' 🕳️已入坑 (Locked)' : 'Commit / 入坑 -1'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // 3. 点击展开评论区
+        function toggleComment(id) {
+            const section = document.getElementById(`comment_${id}`);
+            section.style.display = (section.style.display === 'block') ? 'none' : 'block';
+        }
+
+        // 4. 提交评论到云端
+        async function submitComment(id, currentCount) {
+            const text = document.getElementById(`input_${id}`).value.trim();
+            if (!text) { alert("科研可以水，但坑位不能空！"); return; }
+            
+            const btn = document.getElementById(`btn_${id}`);
+            btn.innerText = "上传中...";
+            btn.disabled = true;
+
+            const newCount = currentCount >= 250 ? 250 : currentCount + 1;
+
+            // 向 Supabase 发送更新
+            const { error } = await _supabase
+                .from('pit_forum')
+                .update({ count: newCount, latest_comment: text })
+                .eq('id', id);
+
+            if (error) {
+                alert("网络波动，发疯失败，请重试！");
+                btn.innerText = "Commit / 坠落 -1";
+                btn.disabled = false;
+                return;
+            }
+
+            // 本地防刷机制
+            localStorage.setItem(`pit_commented_${id}`, 'true');
+            
+            // 重新拉取并渲染
+            fetchForumData();
+        }
+
+        // 5. 模拟新专业申请
+        function proposeMajor() {
+            const val = document.getElementById('new-major-input').value.trim();
+            if (!val) { alert("请输入专业名称！"); return; }
+            alert(`您的申请【${val}】已提交至审稿委员会。\n\n当前状态：Pending (排队中)\n预计审核通过时间：您的导师同意您毕业的那一天。`);
+            document.getElementById('new-major-input').value = '';
+        }
+
+        // 页面加载启动
+        window.onload = fetchForumData;
+    </script>
+</body>
+</html>
