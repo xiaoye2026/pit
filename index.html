@@ -5,148 +5,158 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PIT: Journal of Professional Inutile Training</title>
     <style>
-        :root { --main-color: #1a1a1a; --accent-red: #8b0000; --bg-paper: #fdfdfb; }
+        body {
+            font-family: "Times New Roman", Times, SimSun, serif; /* 英文衬线体，中文宋体 */
+            background-color: #ffffff;
+            color: #333333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        h1, h2, h3, h4 { font-weight: bold; }
+        a { color: #000; text-decoration: none; border-bottom: 1px solid transparent; }
+        a:hover { border-bottom: 1px solid #000; }
         
-        body { 
-            font-family: "Times New Roman", Times, "SimSun", serif; 
-            background-color: var(--bg-paper); 
-            color: var(--main-color); 
-            max-width: 1100px; 
-            margin: 0 auto; 
-            padding: 40px 20px; 
-            line-height: 1.6; 
+        .nav { text-align: center; margin-bottom: 50px; font-size: 1rem; }
+        .nav a { margin: 0 10px; text-decoration: underline; }
+
+        .hero {
+            text-align: center; margin: 40px 0; padding: 40px 0;
+            border-top: 2px solid #000; border-bottom: 2px solid #000;
         }
 
-        /* 刊头 */
-        .header { text-align: center; border-bottom: 5px double #000; padding-bottom: 20px; }
-        .header h1 { font-size: 2.8rem; margin: 0; letter-spacing: -1px; }
+        .section-title { border-bottom: 1px dashed #ccc; padding-bottom: 5px; margin-top: 50px; }
         
-        /* 核心 Slogan */
-        .hero-slogan { 
-            text-align: center; margin: 50px 0; padding: 60px 20px; 
-            border: 2px solid #000; background: #fff;
-            box-shadow: 10px 10px 0px #eee;
-        }
-        .hero-slogan h2 { font-size: 2.2rem; margin: 0; font-weight: 900; line-height: 1.2; }
-        .hero-slogan p { font-size: 1.6rem; margin-top: 20px; color: var(--accent-red); font-weight: bold; }
-
-        .nav { text-align: center; margin-bottom: 40px; font-weight: bold; font-size: 0.9rem; }
-        .nav a { text-decoration: none; color: #000; margin: 0 10px; border-bottom: 1px solid transparent; }
-        .nav a:hover { border-bottom: 1px solid #000; }
-
-        /* 主体分栏布局 */
-        .main-content { display: flex; gap: 40px; flex-wrap: wrap; }
-        .left-column { flex: 2; min-width: 300px; }
-        .right-column { flex: 1; min-width: 280px; }
-
-        .section-title { 
-            background: #000; color: #fff; padding: 8px 15px; 
-            margin: 20px 0; font-size: 1rem; letter-spacing: 1px;
+        .interactive-box {
+            margin: 40px 0; padding: 25px;
+            border: 2px solid #333; background-color: #fcfcfc;
         }
 
-        /* 交互区样式 */
-        .interactive-box { background: #f4f4f4; border: 2px dashed #999; padding: 20px; margin-bottom: 30px; }
-        
-        /* 废话生成器按钮阵列 */
-        .bs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px; }
-        .bs-btn { 
-            background: #fff; border: 1px solid #000; padding: 8px; 
+        /* 废话专区样式 */
+        .bs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .bs-btn {
+            background: #f0f0f0; border: 1px solid #ccc; padding: 10px;
             cursor: pointer; font-size: 0.85rem; transition: 0.2s;
         }
-        .bs-btn:hover { background: #000; color: #fff; }
-        #bs-output { 
-            margin-top: 20px; padding: 15px; border-left: 4px solid var(--accent-red); 
-            background: #fff; display: none; font-size: 0.95rem; white-space: pre-wrap;
+        .bs-btn:hover { background: #e0e0e0; }
+        #long-bs-output {
+            margin-top: 20px; padding: 20px; border-left: 5px solid #000;
+            background: #f9f9f9; font-size: 0.95rem; white-space: pre-wrap;
+            min-height: 100px; display: none;
         }
 
-        /* 天坑列表样式 */
-        .pit-item { border-bottom: 1px dotted #ccc; padding: 10px 0; }
-        .pit-item h4 { margin: 0; color: var(--accent-red); }
-
-        .footer-joke {
-            margin-top: 60px; padding: 30px; text-align: center; border-top: 1px solid #eee;
-            font-size: 0.8rem; color: #888;
-        }
+        button { padding: 8px 15px; background: #333; color: white; border: none; cursor: pointer; }
+        button:hover { background: #000; }
+        input, textarea { padding: 8px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>PIT: Journal of Professional Inutile Training</h1>
-        <p>ISSN: 0000-0250 | EST. 2026</p>
+    <div style="text-align: center;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 5px;">PIT: Journal of Professional Inutile Training</h1>
+        <p style="margin-top: 0; font-size: 1.1rem;">PIT: 天坑专业收容所</p>
+        <p style="font-size: 0.8rem; color: #666;">ISSN 0000-0250 | Est. 2026</p>
     </div>
 
     <div class="nav">
-        <a href="#current">Current Issue / 最新文章</a> |
-        <a href="#index">PIT INDEX / 天坑指数</a> |
-        <a href="#generator">BS Generator / 废话生成器</a> |
+        <a href="#home">Home / 首页</a> |
+        <a href="#current-issue">Current Issue / 最新文章</a> |
+        <a href="#pit-index">Pit Index (PI) / 天坑指数</a> |
+        <a href="#bs-zone">Abstract Generator / 废话生成器</a> |
+        <a href="#bottomless-pit">Bottomless Pit / 无底洞专区</a> |
         <a href="#contact">Contact / 合作</a>
     </div>
 
-    <div class="hero-slogan">
-        <h2>Focusing on Research That Changes Absolutely Nothing</h2>
-        <p>既然深陷坑底，不如挖出有创意的坑。</p>
+    <div id="home" class="hero">
+        <h2 style="font-size: 2.2rem;">Focusing on Research That Changes Absolutely Nothing.</h2>
+        <p style="font-size: 1.6rem; color: #8b0000; font-weight: bold;">既然深陷坑底，不如挖得更有创意——极致的无用之美。</p>
     </div>
 
-    <div class="main-content">
-        <div class="left-column">
-            <div id="current">
-                <div class="section-title">LATEST ISSUE / 最新文章</div>
-                <div style="padding: 10px;">
-                    <h3>[Vol.1] 基于生化环材背景下“空气画饼”的可视化表征研究</h3>
-                    <p style="font-style:italic; font-size:0.85rem;">实验室幽灵 (2026)</p>
-                </div>
-            </div>
-
-            <div id="generator">
-                <div class="section-title">Long-form Bullshit Generator / 高端学术废话生成器</div>
-                <div class="interactive-box">
-                    <p style="margin:0; font-size:0.9rem;">点击维度，通过多模态叙事解构学术虚无：</p>
-                    <div class="bs-grid">
-                        <button class="bs-btn" onclick="runBS('底层逻辑')">维度A：底层逻辑</button>
-                        <button class="bs-btn" onclick="runBS('范式转移')">维度B：范式转移</button>
-                        <button class="bs-btn" onclick="runBS('协同效应')">维度C：协同效应</button>
-                        <button class="bs-btn" onclick="runBS('熵增定律')">维度D：熵增定律</button>
-                    </div>
-                    <div id="bs-output"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="right-column" id="index">
-            <div class="section-title">PIT INDEX / 天坑指数</div>
-            <div class="interactive-box" style="background: #fff; border: 1px solid #000;">
-                <p style="font-size:0.8rem; color:#666;">Impact Factor: -250.0</p>
-                
-                <div class="pit-item">
-                    <h4>生化环材 (PI: -249)</h4>
-                    <p style="font-size:0.85rem; margin:5px 0;">四大天坑之首，召唤学术神龙，毕业即失业。</p>
-                </div>
-                <div class="pit-item">
-                    <h4>土木建筑 (PI: -240)</h4>
-                    <p style="font-size:0.85rem; margin:5px 0;">提桶跑路是本专业唯一的动力学平衡点。</p>
-                </div>
-                <div class="pit-item">
-                    <h4>夕阳文科 (PI: -235)</h4>
-                    <p style="font-size:0.85rem; margin:5px 0;">研究了一辈子故人，自己也快成古迹了。</p>
-                </div>
-                
-                <button onclick="alert('录入成功，正在向地心坠落...')" style="margin-top:15px; width:100%; padding:10px; background:#000; color:#fff; border:none; cursor:pointer;">申报新坑位</button>
-            </div>
+    <h2 id="current-issue" class="section-title">Current Issue / 最新文章 (Vol. 1, No. 1)</h2>
+    <div style="padding: 20px 0;">
+        <h3>Investigation on "Air-Painted Pie" Visualization in Bio-Chem-Env-Mat Context</h3>
+        <p><i>Author: Ghost of Lab / 实验室幽灵 (2026)</i></p>
+        <div style="font-size: 0.95rem; margin-top: 10px; padding-left: 15px; border-left: 3px solid #eee;">
+            <strong>Abstract / 摘要:</strong> 本文系统研究了导师在组会上产生的“画饼”声波在真空环境下的传播特性。通过计算流体力学模拟发现，其诱导的心理期望值与实际经费拨付率成反比 ($E \propto 1/F$)。本研究为广大深陷冷门专业的学子提供了一套合法化的心理防御机制。
         </div>
     </div>
 
-    <div id="contact" class="footer-joke">
-        <p>投稿/合作: <a href="mailto:jpit_pit@163.com" style="color:var(--accent-red);">jpit_pit@163.com</a></p>
-        <div style="text-align:left; max-width:600px; margin:20px auto; border-top:1px solid #eee; padding-top:10px;">
+    <h2 id="pit-index" class="section-title">Pit Index (PI) / 天坑指数</h2>
+    <div class="interactive-box">
+        <p style="text-align: center; font-style: italic;">Current Journal Impact Factor: <strong>-250.0</strong></p>
+        <div id="pit-list">
+            <p>1. <strong>生化环材</strong> (PI: -249) - "我这一生，都在和不长出来的细胞博弈。"</p>
+            <p>2. <strong>土木建筑</strong> (PI: -248) - "提桶跑路是唯一的一级动力学反应。"</p>
+            <p>3. <strong>夕阳文科</strong> (PI: -235) - "研究了一辈子故人，发现自己也快成古迹了。"</p>
+        </div>
+        <button onclick="alert('数据同步中，正在向地心坠落...')">点击刷新实时排名</button>
+    </div>
+
+    <h2 id="bs-zone" class="section-title">Abstract Generator / 废话生成器</h2>
+    <div class="interactive-box">
+        <h3 style="margin-top:0;">Long-form Bullshit Generator / 高端学术废话生成器</h3>
+        <p style="font-size: 0.85rem; color: #666;">点击下方维度，一键生成 400 字左右的深度废话，用于填充论文讨论、周报或组会 PPT。</p>
+        
+        <div class="bs-grid">
+            <button class="bs-btn" onclick="generateLongBS(0)">维度A：底层逻辑解构</button>
+            <button class="bs-btn" onclick="generateLongBS(1)">维度B：多模态协同效应</button>
+            <button class="bs-btn" onclick="generateLongBS(2)">维度C：范式转移困境</button>
+            <button class="bs-btn" onclick="generateLongBS(3)">维度D：赋能路径闭环</button>
+            <button class="bs-btn" onclick="generateLongBS(4)">维度E：量子概率纠缠</button>
+            <button class="bs-btn" onclick="generateLongBS(5)">维度F：垂直领域下沉</button>
+            <button class="bs-btn" onclick="generateLongBS(6)">维度G：去中心化叙事</button>
+            <button class="bs-btn" onclick="generateLongBS(7)">维度H：熵增定律反转</button>
+            <button class="bs-btn" onclick="generateLongBS(8)">维度I：非线性迭代价值</button>
+            <button class="bs-btn" onclick="generateLongBS(9)">维度J：沉浸式虚无研究</button>
+        </div>
+
+        <div id="long-bs-output"></div>
+    </div>
+
+    <h2 id="bottomless-pit" class="section-title">Bottomless Pit / 无底洞专区</h2>
+    <div style="text-align: center; padding: 30px;">
+        <p>你的研究一无是处？太完美了，请立即投稿：</p>
+        <p style="font-size: 1.2rem; margin: 20px 0;">
+            投稿/合作: <a href="mailto:jpit_pit@163.com" style="color:#8b0000; font-weight:bold; text-decoration:underline;">jpit_pit@163.com</a>
+        </p>
+    </div>
+
+    <div style="text-align: center; margin-top: 80px; font-size: 0.8rem; color: #999; border-top: 1px solid #eee; padding-top: 20px;">
+        <div style="text-align:left; max-width:700px; margin:0 auto; line-height: 2;">
             © 2026 PIT Journal. 保留所有想跑路的权利 (All Rights of Escaping Reserved). <br>
             * 版权由我所有，但我对任何实验爆管、数据崩盘、导师变脸概不负责。 <br>
-            * 本站内容处于“学术前沿”和“一坨废话”的量子叠加态。 <br>
+            * 本站内容处于“学术前沿”和“一坨废话”的量子叠加态，你不看它，它就很有意义。 <br>
             * 引用本站请注明：出自《天坑专业自救指南第 404 章》。
         </div>
     </div>
 
     <script>
-        function runBS(dimension) {
-            const output = document.getElementById('bs-output');
-            const text = `在当前多维度学术语境的宏观架构下，关于“${dimension}”的解构已经演化为一个超越学科边界的本体论困境。本研究通过对该维度的非线性迭代分析发现，其
+        const longTemplates = [
+            "在当前多维度的科研语境下，[关键词]的底层逻辑解构不仅是一个学术命题，更是一个深刻的哲学困境。我们观察到，当研究者试图通过范式转移来锚定其学术价值时，往往陷入了一种非线性的叙事闭环。这种闭环在宏观层面表现为对现有知识体系的机械式复刻，而在微观层面则呈现出一种原子化的破碎。通过对[关键词]的深度对齐，我们发现协同效应在实际操作中被过度异化了。这种异化导致了科研产出的边际效益递减，甚至在某些极端情况下触发了知识领域的熵增坍塌。为了应对这种困境，我们必须打破传统的认知边界，尝试在虚无主义的废墟上重建一套去中心化的评价标准。这不仅要求我们对实验数据保持克制，更要求我们对导师的“空气画饼”具备某种程度的量子免疫力。总之，[关键词]的重构是一场关于无用之美的终极修行，它在消解意义的同时，也赋予了我们在这个天坑专业中继续苟且的合法性。未来的研究应当更加聚焦于如何在高压下保持这种精致的学术废话输出，从而实现科研精神的某种伪复兴。",
+            "探讨[关键词]的多模态协同效应，必须首先承认其在动态博弈中的不确定性。这种不确定性并非源于实验器材的误差，而是根植于一种跨学科的认知盲区。在生化环材的典型背景下，[关键词]往往被包裹在华丽的数据模型中，然而其内核却是一片虚无。我们尝试引入赋能路径的概念来重新审视这一现象，结果发现，所谓的“赋能”在本质上只是一种语言层面的过度包装。这种包装不仅掩盖了底层劳动力（指研究生）的生存压力，更在学术共同体中制造了一种虚假的繁荣。当[关键词]被推向垂直领域的深水区时，我们面临的挑战不再是技术性的，而是结构性的。结构性的天坑无法通过简单的逻辑修补来填平，只能通过更高级的废话叙事来完成心理补偿。本研究通过对400名处于崩溃边缘的研究生进行抽样发现，[关键词]的出现频率与脱发速度呈显著正相关。这一发现为我们理解学术内卷提供了全新的视角：内卷不是目的，而是一种在无意义中寻找意义的绝望尝试。未来的研究应致力于开发一套自动化的[关键词]掩饰系统，以减轻研究者的精神负荷。",
+            "范式转移在[关键词]研究中的失效，标志着我们已经进入了一个学术后真相时代。在这个时代，真相不再取决于数据的真实性，而取决于[关键词]在PPT中的渲染效果。通过对历年影响因子走势的非线性模拟，本团队发现，越是具有“天坑”属性的专业，其对[关键词]的修辞依赖度就越高。这种依赖度在某种意义上形成了一种共生关系：专业提供坑位，[关键词]提供遮羞布。我们深入分析了这种共生关系的演化路径，发现其具有极强的自组织能力，能够根据外界压力（如毕业要求）自发调整其学术密度。这种密度的调整往往以牺牲逻辑连贯性为代价，换取一种视觉上的“高大上”。在实际应用中，[关键词]的赋能效应常常表现为一种延迟满足的幻觉。研究者在长期的重复性劳动中，逐渐丧失了对现实世界的感知能力，转而沉溺于由[关键词]构建的数字镜像中。这种镜像虽然华丽，却无法掩盖其背后的逻辑空洞。本报告呼吁，学术界应回归对[关键词]原始定义的尊重，而非将其作为一种廉价的学术增量工具。"
+        ];
+
+        function generateLongBS(index) {
+            const keywords = ["底层逻辑", "协同效应", "范式转移", "路径闭环", "量子纠缠", "下沉市场", "去中心化", "熵增定律", "非线性迭代", "虚无研究"];
+            const kw = keywords[index];
+            
+            let baseText = longTemplates[index % 3]; 
+            let output = baseText.replace(/\[关键词\]/g, kw);
+            
+            const filler = `\n\n此外，从更宏观的视角来看，${kw}的演化路径展现出一种惊人的韧性。在未来的研究展望中，我们必须意识到这种韧性背后的脆弱性。研究表明，在不同压强和导师心情指数下，${kw}的表征方式会发生180度的转变。这种转变不是孤立的，而是与整个天坑生态系统息息相关。我们不仅要在学术讨论中频繁提及${kw}，更要在日常洗瓶和调代码的过程中时刻反思其带来的精神内耗。只有通过这种全方位的沉浸式反思，我们才能在${kw}的海洋中找到那一丝微弱的希望，哪怕那希望仅仅是下一张画出来的饼。`;
+            
+            const el = document.getElementById('long-bs-output');
+            el.style.display = 'block';
+            el.innerHTML = `<strong>当前生成维度：${kw}</strong><br><br>${output}${filler}`;
+            el.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
